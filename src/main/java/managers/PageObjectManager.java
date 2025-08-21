@@ -9,6 +9,7 @@ public class PageObjectManager {
     private PaymentPage paymentPage;
     private HomePage homePage;
     private CheckoutPage checkoutPage;
+    private addressPage AddressPage;
 
     public PageObjectManager(WebDriver driver) {
         this.driver = driver;
@@ -28,5 +29,9 @@ public class PageObjectManager {
 
     public CheckoutPage getCheckoutPage() {
         return (checkoutPage == null) ? checkoutPage = new CheckoutPage(driver) : checkoutPage;
+    }
+
+    public addressPage getCheckoutPage() {
+        return (AddressPage == null) ? AddressPage = new AddressPage(driver) : AddressPage;
     }
 }

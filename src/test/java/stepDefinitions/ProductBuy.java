@@ -3,16 +3,21 @@ package stepDefinitions;
 import io.cucumber.java.en.*;
 import managers.DriverManager;
 import managers.PageObjectManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
 import pageObjects.CheckoutPage;
 import pageObjects.HomePage;
+import pageObjects.LoginPage;
 import pageObjects.PaymentPage;
 
 public class ProductBuy {
+    private static final Logger log = LoggerFactory.getLogger(ProductBuy.class);
     PageObjectManager pom = new PageObjectManager(DriverManager.getDriver());
     HomePage homePage = pom.getHomePage();
-    CheckoutPage checkOut = pom.getCheckoutPage();
+    CheckoutPage checkOut = pom.getaddressPage();
+    LoginPage loginPage = pom.getLoginPage();
     PaymentPage paymentPage = pom.getPaymentPage();
     SoftAssert soft = new SoftAssert();
 
@@ -24,11 +29,20 @@ public class ProductBuy {
         homePage.searchProduct("Phones");
         homePage.filterByBrand("Samsung");
         homePage.sortBy("Newest Arrivals");
-        homePage.listOfProducts("Samsung Galaxy Z Fold7 5G Smartphone with Galaxy AI (Blue Shadow, 12GB RAM, 256GB Storage), Ultra Sleek Design with 200MP Camera, Powerful Snapdragon 8 Elite, Google Gemini");
+        homePage.listOfProducts("Samsung Galaxy Z Fold7 5G Smartphone with Galaxy AI (Silver Shadow, 12GB RAM, 256GB Storage), Ultra Sleek Design with 200MP Camera, Powerful Snapdragon 8 Elite, Google Gemini");
         soft.assertEquals(homePage.getSelProd(), homePage.SelcProd(), "Product name mismatch!");
 
         //checkoutPage:
         checkOut.isProductAvailable();
+        checkOut.proceedToCheckout();
+
+        //Login page:
+        loginPage.Email("arpita6079@gmail.com");
+        loginPage.password("Bisleri@6079");
+
+        //address page:
+
+
     }
 
 //    @When("I choose payment method Cash on Delivery")

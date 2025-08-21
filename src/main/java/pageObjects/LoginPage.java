@@ -23,12 +23,14 @@ public class LoginPage {
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
-    public void login(String email, String password) {
+    public void Email(String email) {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(@id, \"email_login\")]"))).sendKeys(email);
         WebElement loginEmail = driver.findElement(By.xpath("//input[@type=\"submit\"]"));
         clickWithDelay(loginEmail, 5);
+    }
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[type*=\"password\"]"))).sendKeys(password);
+    public void password(String passwo){
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[type*=\"password\"]"))).sendKeys(passwo);
         WebElement loginPass = driver.findElement(By.cssSelector("input[id*=\"signIn\"]"));
         clickWithDelay(loginPass, 5);
     }

@@ -11,8 +11,8 @@ public class TestHooks {
         DriverManager.getDriver().get("https://www.amazon.in/");
     }
 
-    @After
-    public void tearDown() {
-        DriverManager.quitDriver();
-    }
+//    @After
+//    public void tearDown() {
+//        DriverManager.quitDriver();
+//    }
 }
