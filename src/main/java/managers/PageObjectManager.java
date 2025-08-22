@@ -31,7 +31,7 @@ public class PageObjectManager {
         return (checkoutPage == null) ? checkoutPage = new CheckoutPage(driver) : checkoutPage;
     }
 
-    public addressPage getCheckoutPage() {
-        return (AddressPage == null) ? AddressPage = new AddressPage(driver) : AddressPage;
+    public addressPage getAddressPage() {
+        return (AddressPage == null) ? AddressPage = new addressPage(driver) : AddressPage;
     }
 }

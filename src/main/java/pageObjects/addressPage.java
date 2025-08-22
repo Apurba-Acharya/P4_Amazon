@@ -30,14 +30,14 @@ public class addressPage {
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
-    public void getDeliveryName(String perName) {
+    public void DeliveryName(String perName) {
         try {
             List<WebElement> names = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//*[contains(@class, \"a-radio-label\")]/descendant::span[1]")));
             for (WebElement name : names) {
                 String deliN = name.getText().trim();
                 deliName = deliN;
                 if (deliN.equalsIgnoreCase(perName)) {
-                    System.out.println("Entered delivery name is matched");
+                    System.out.println("Entered delivery name is matched: " + deliN);
                     break;
                 }
             }
@@ -54,7 +54,7 @@ public class addressPage {
         return deliName;
     }
 
-    public void getDeliveryAddress(String perDelivery) {
+    public void DeliveryAddress(String perDelivery) {
         try {
             List<WebElement> addresses = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//*[contains(@class, \"a-radio-label\")]/descendant::span[2]")));
             for (WebElement address : addresses) {
@@ -66,7 +66,14 @@ public class addressPage {
                 }
             }
         } catch (Exception e) {
-            System.out.println("Entered delivery address is not found: " + e.getMessage());
+            System.out.println("Entered delivery address is not found");
+        }
+
+        try {
+            WebElement thisAddress = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(@id, \"secondary\")]/child::span/child::span[contains(@id, \"secondary\")]")));
+            clickWithDelay(thisAddress, 5);
+        }catch (Exception e){
+            System.out.println("Deliver to this address button not found");
         }
     }
 
@@ -77,7 +84,7 @@ public class addressPage {
         return deliAddress;
     }
 
-    public void getPaymentType(String perPayment) {
+    public void PaymentType(String perPayment) {
         try {
             List<WebElement> payments = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//*[contains(@class, \"a-radio-label\")]/descendant::span[2]")));
             for (WebElement payment : payments) {

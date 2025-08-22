@@ -3,20 +3,19 @@ package stepDefinitions;
 import io.cucumber.java.en.*;
 import managers.DriverManager;
 import managers.PageObjectManager;
+import org.apache.commons.math3.analysis.function.Add;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
-import pageObjects.CheckoutPage;
-import pageObjects.HomePage;
-import pageObjects.LoginPage;
-import pageObjects.PaymentPage;
+import pageObjects.*;
 
 public class ProductBuy {
     private static final Logger log = LoggerFactory.getLogger(ProductBuy.class);
     PageObjectManager pom = new PageObjectManager(DriverManager.getDriver());
     HomePage homePage = pom.getHomePage();
-    CheckoutPage checkOut = pom.getaddressPage();
+    CheckoutPage checkOut = pom.getCheckoutPage();
+    addressPage AddressPage = pom.getAddressPage();
     LoginPage loginPage = pom.getLoginPage();
     PaymentPage paymentPage = pom.getPaymentPage();
     SoftAssert soft = new SoftAssert();
@@ -41,7 +40,8 @@ public class ProductBuy {
         loginPage.password("Bisleri@6079");
 
         //address page:
-
+        AddressPage.DeliveryName("Arpita Acharya");
+        AddressPage.DeliveryAddress("5/28 Sri Vishnu Appartment ph 2, Brahmapur Shiv Mandir Road, KOLKATA, WEST BENGAL, 700096, India");
 
     }
 
