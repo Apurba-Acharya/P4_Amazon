@@ -1,6 +1,7 @@
 package pageObjects;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
@@ -10,10 +11,12 @@ public class HomePage {
     WebDriver driver;
     WebDriverWait wait;
     private String selectedProduct;
+    Actions action;
 
     public HomePage(WebDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        this.action = new Actions(driver);
     }
 
     public void clickWithDelay(WebElement element, int delayInSeconds) {
@@ -30,16 +33,17 @@ public class HomePage {
             // Continue shopping button:
             WebElement continueBtn = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(@class, 'a-button-inner')]//button")));
             if (continueBtn.getText().equalsIgnoreCase("Continue shopping")) {
-                continueBtn.click();
+                clickWithDelay(continueBtn, 5);
             }
         } catch (TimeoutException e) {
             System.out.println("'Continue shopping' button not found, proceeding to search...");
         }
     }
 
-    public void searchProduct(String query) {
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//label[text()='Search Amazon.in']/following-sibling::input"))).sendKeys(query);
-        driver.findElement(By.xpath("//span[@aria-label='Go']/child::input")).click();
+    public void searchProduct(String product) {
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//label[text()='Search Amazon.in']/following-sibling::input"))).sendKeys(product);
+        WebElement sePrduct = driver.findElement(By.xpath("//span[@aria-label='Go']/child::input"));
+        clickWithDelay(sePrduct, 5);
     }
 
     public void filterByBrand(String brandName) {
@@ -75,11 +79,11 @@ public class HomePage {
         }
     }
 
-    public void sortBy(String option) {
+    public void sortBy(String sortOption) {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class=\"a-dropdown-container\"]/descendant::span[2]"))).click();
         List<WebElement> sortBy = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(".a-nostyle.a-list-link>li>a")));
         for (WebElement sorted : sortBy) {
-            if (sorted.getText().equalsIgnoreCase(option)) {
+            if (sorted.getText().equalsIgnoreCase(sortOption)) {
                 clickWithDelay(sorted, 5);
                 break;
             }
@@ -87,7 +91,7 @@ public class HomePage {
     }
 
     public void listOfProducts(String prodC){
-        List<WebElement> products = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//*[contains(@class, \"s-main-slot s-result-list s-search-results sg-row\")]/div[contains(@role, listitem)]/descendant::span[3]")));
+        List<WebElement> products = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//*[contains(@class, \"puisg-row\")]/descendant::h2/child::span")));
         boolean found = false;
         for (WebElement prdts : products) {
             String Prdts = prdts.getText().trim();
@@ -104,7 +108,8 @@ public class HomePage {
     }
 
     public String SelcProd() {
-        return driver.findElement(By.xpath("//*[contains(@id, \"centerCol\")]/descendant::span[@id=\"productTitle\"]")).getText().trim();
+        String prductSelect = driver.findElement(By.xpath("//*[contains(@id, \"centerCol\")]/descendant::span[@id=\"productTitle\"]")).getText().trim();
+        return prductSelect;
     }
 
     public String getSelProd() {

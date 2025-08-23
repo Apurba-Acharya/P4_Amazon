@@ -1,6 +1,7 @@
 package pageObjects;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -9,7 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.List;
 
-public class addressPage {
+public class AddressPage {
     WebDriver driver;
     WebDriverWait wait;
     private String deliName;
@@ -25,7 +26,7 @@ public class addressPage {
         element.click();
     }
 
-    public addressPage(WebDriver driver) {
+    public AddressPage(WebDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
@@ -48,29 +49,30 @@ public class addressPage {
     }
 
     public String selcName() {
-        return driver.findElement(By.xpath("")).getText().trim();
+        return driver.findElement(By.cssSelector("#deliver-to-customer-text")).getText().trim();
     }
     public String getselName() {
         return deliName;
     }
 
-    public void DeliveryAddress(String perDelivery) {
+    public void DeliveryAddress(String deliverTo) {
         try {
             List<WebElement> addresses = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//*[contains(@class, \"a-radio-label\")]/descendant::span[2]")));
             for (WebElement address : addresses) {
-                String deliN = address.getText().trim();
-                deliAddress = deliN;
-                if (deliN.equalsIgnoreCase(perDelivery)) {
-                    clickWithDelay(address, 5);
+                String deliAdd = address.getText().trim();
+                deliAddress = deliAdd;
+                if (deliAdd.equalsIgnoreCase(deliverTo)) {
+                    System.out.println("Entered delivery address found: " + deliAdd);
+                    clickWithDelay(address, 10);
                     break;
                 }
             }
         } catch (Exception e) {
-            System.out.println("Entered delivery address is not found");
+            System.out.println("Entered delivery address is not found: " + e.getMessage());
         }
 
         try {
-            WebElement thisAddress = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(@id, \"secondary\")]/child::span/child::span[contains(@id, \"secondary\")]")));
+            WebElement thisAddress = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(@id, \"secondary\")]/child::span/child::input[contains(@class, \"a-button-input\")]")));
             clickWithDelay(thisAddress, 5);
         }catch (Exception e){
             System.out.println("Deliver to this address button not found");
@@ -78,33 +80,10 @@ public class addressPage {
     }
 
     public String selcAddress() {
-        return driver.findElement(By.xpath("")).getText().trim();
+        return driver.findElement(By.xpath("//*[contains(@id, \"deliver-to-address\")]")).getText().trim();
     }
     public String getselAddress() {
         return deliAddress;
-    }
-
-    public void PaymentType(String perPayment) {
-        try {
-            List<WebElement> payments = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//*[contains(@class, \"a-radio-label\")]/descendant::span[2]")));
-            for (WebElement payment : payments) {
-                String deliPay = payment.getText().trim();
-                deliPayment = deliPay;
-                if (deliPay.equalsIgnoreCase(perPayment)) {
-                    clickWithDelay(payment, 5);
-                    break;
-                }
-            }
-        } catch (Exception e) {
-            System.out.println("Entered payment method is not found: " + e.getMessage());
-        }
-    }
-
-    public String selcPayment() {
-        return driver.findElement(By.xpath("")).getText().trim();
-    }
-    public String getselPayment() {
-        return deliPayment;
     }
 
 }

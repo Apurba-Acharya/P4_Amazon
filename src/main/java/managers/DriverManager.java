@@ -13,6 +13,9 @@ public class DriverManager {
             WebDriverManager.chromedriver().setup();
             ChromeOptions options = new ChromeOptions();
             options.setExperimentalOption("excludeSwitches", new String[]{"enable-automation"});
+            options.addArguments("--disable-features=WebAuthenticationUI");
+            options.addArguments("--disable-save-password-bubble");
+            options.addArguments("--disable-notifications");
             driver = new ChromeDriver(options);
             driver.manage().window().maximize();
         }
