@@ -63,4 +63,5 @@ public class PaymentPage {
         WebElement lstPage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(@class, 'a-button-close')]")));
         clickWithDelay(lstPage, 5);
     }
+
 }
