@@ -6,23 +6,24 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import java.time.Duration;
 import java.util.List;
+
+import static utilities.BrowserUtils.clickWithDelay;
 
 public class PaymentPage {
     WebDriver driver;
     WebDriverWait wait;
     private String deliPayment;
 
-    public void clickWithDelay(WebElement element, int delayInSeconds) {
-        try {
-            Thread.sleep(delayInSeconds * 1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        element.click();
-    }
+//    public void clickWithDelay(WebElement element, int delayInSeconds) {
+//        try {
+//            Thread.sleep(delayInSeconds * 1000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        element.click();
+//    }
 
     public PaymentPage (WebDriver driver) {
         this.driver = driver;
@@ -63,5 +64,4 @@ public class PaymentPage {
         WebElement lstPage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(@class, 'a-button-close')]")));
         clickWithDelay(lstPage, 5);
     }
-
 }
