@@ -29,6 +29,7 @@ public class ProductBuySteps {
         loginPage.logI();
         loginPage.Email(email);
         loginPage.password(password);
+        loginPage.verifyOTP();
     }
 
     @When("user searches for {string}")

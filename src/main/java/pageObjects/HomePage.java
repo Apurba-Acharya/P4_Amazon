@@ -7,6 +7,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.List;
 
+import static utilities.BrowserUtils.clickWithDelay;
+
 public class HomePage {
     WebDriver driver;
     WebDriverWait wait;
@@ -17,15 +19,6 @@ public class HomePage {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         this.action = new Actions(driver);
-    }
-
-    public void clickWithDelay(WebElement element, int delayInSeconds) {
-        try {
-            Thread.sleep(delayInSeconds * 1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        element.click();
     }
 
     public void continueShoppingButton(){

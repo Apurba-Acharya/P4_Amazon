@@ -8,20 +8,13 @@ import org.openqa.selenium.support.ui.*;
 import java.time.Duration;
 import java.util.List;
 
+import static utilities.BrowserUtils.clickWithDelay;
+
 public class CheckoutPage {
     WebDriver driver;
     WebDriverWait wait;
     PageObjectManager pom = new PageObjectManager(DriverManager.getDriver());
     HomePage homePage = pom.getHomePage();
-
-    public void clickWithDelay(WebElement element, int delayInSeconds) {
-        try {
-            Thread.sleep(delayInSeconds * 1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        element.click();
-    }
 
     public CheckoutPage(WebDriver driver) {
         this.driver = driver;

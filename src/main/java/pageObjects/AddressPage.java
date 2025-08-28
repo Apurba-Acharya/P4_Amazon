@@ -10,21 +10,14 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.List;
 
+import static utilities.BrowserUtils.clickWithDelay;
+
 public class AddressPage {
     WebDriver driver;
     WebDriverWait wait;
     private String deliName;
     private String deliAddress;
     private String deliPayment;
-
-    public void clickWithDelay(WebElement element, int delayInSeconds) {
-        try {
-            Thread.sleep(delayInSeconds * 1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        element.click();
-    }
 
     public AddressPage(WebDriver driver) {
         this.driver = driver;

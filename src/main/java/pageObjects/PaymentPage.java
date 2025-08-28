@@ -16,15 +16,6 @@ public class PaymentPage {
     WebDriverWait wait;
     private String deliPayment;
 
-//    public void clickWithDelay(WebElement element, int delayInSeconds) {
-//        try {
-//            Thread.sleep(delayInSeconds * 1000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        element.click();
-//    }
-
     public PaymentPage (WebDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));

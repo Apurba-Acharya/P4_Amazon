@@ -6,19 +6,12 @@ import org.openqa.selenium.support.ui.*;
 
 import java.time.Duration;
 
+import static utilities.BrowserUtils.clickWithDelay;
+
 public class LoginPage {
     WebDriver driver;
     WebDriverWait wait;
     Actions action;
-
-    public void clickWithDelay(WebElement element, int delayInSeconds) {
-        try {
-            Thread.sleep(delayInSeconds * 1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        element.click();
-    }
 
     public LoginPage(WebDriver driver) {
         this.driver = driver;
@@ -26,13 +19,13 @@ public class LoginPage {
         this.action = new Actions(driver);
     }
 
-    public void logI(){
-        try{
+    public void logI() {
+        try {
             WebElement ele = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[starts-with(@href, 'https://www.amazon.in/ap/signin')]/following-sibling::button")));
             action.moveToElement(ele).build().perform();
             WebElement eleSinBut = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".nav-action-inner")));
             clickWithDelay(eleSinBut, 5);
-        }catch (TimeoutException e){
+        } catch (TimeoutException e) {
             System.out.println("PopUp/SignIn button no found");
         }
     }
@@ -55,5 +48,22 @@ public class LoginPage {
         }
         WebElement loginPass = driver.findElement(By.cssSelector("input[id*=\"signIn\"]"));
         clickWithDelay(loginPass, 10);
+    }
+
+    public void verifyOTP(){
+        WebElement otpBox = driver.findElement(By.xpath("//*[contains(@id, 'box-otp')]"));
+        WebElement otpSubmitButton = driver.findElement(By.xpath("//*[contains(text(), \"Submit code\")]"));
+        try {
+
+            if (otpBox.isDisplayed()) {
+                System.out.println("OTP box displayed. Waiting for 20 seconds...");
+                clickWithDelay(otpBox, 20);
+                clickWithDelay(otpSubmitButton, 0);
+            } else {
+                System.out.println("OTP box not displayed. Continuing execution...");
+            }
+        } catch (org.openqa.selenium.NoSuchElementException e) {
+            System.out.println("OTP box not found. Continuing execution...");
+        }
     }
 }

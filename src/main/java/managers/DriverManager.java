@@ -79,9 +79,9 @@ public class DriverManager {
     }
 
     public static void quitDriver() {
-//        if (driver != null) {
-//            driver.quit();
-//            driver = null;
-//        }
+        if (driver != null) {
+            driver.quit();
+            driver = null;
+        }
     }
 }
