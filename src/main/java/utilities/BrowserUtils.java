@@ -24,18 +24,18 @@ public class BrowserUtils {
         element.click();
     }
 
-    // ✅ Attach screenshot to Allure
+    // Attach screenshots:
     @Attachment(value = "Screenshot", type = "image/png")
     public static byte[] attachScreenshot(WebDriver driver) {
         return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
     }
 
-    // ✅ Save screenshot with timestamp in target/screenshots
+    // Save screenshot with timestamp in target > screenshots:
     public static void saveScreenshot(WebDriver driver, String testName) {
         try {
             byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
 
-            String timestamp = new SimpleDateFormat("yyyyMMdd_HHmm").format(new Date());
+            String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
             String fileName = testName.replace(" ", "_") + "_" + timestamp + ".png";
 
             Path path = Paths.get("target/screenshots", fileName);
@@ -43,7 +43,7 @@ public class BrowserUtils {
             Files.write(path, screenshot);
 
         } catch (Exception e) {
-            //e.printStackTrace();
+
         }
     }
 }

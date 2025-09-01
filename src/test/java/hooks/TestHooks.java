@@ -20,10 +20,11 @@ public class TestHooks {
 
     @After
     public void tearDown(Scenario scenario) {
-        driver = DriverManager.getDriver(); // ✅ get the active driver
+        driver = DriverManager.getDriver();
         if (scenario.isFailed()) {
             BrowserUtils.attachScreenshot(driver);
             BrowserUtils.saveScreenshot(driver, scenario.getName());
+            System.out.println("Failed screenshorts attached...");
         }
         DriverManager.quitDriver();
     }

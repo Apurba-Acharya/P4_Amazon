@@ -107,7 +107,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.13.0</version> <!-- Latest stable -->
+                <version>3.13.0</version>
                 <configuration>
                     <source>24</source>
                     <target>24</target>
@@ -119,13 +119,12 @@
             <plugin>
                 <groupId>io.qameta.allure</groupId>
                 <artifactId>allure-maven</artifactId>
-                <version>2.15.0</version> <!-- Newer stable -->
+                <version>2.15.0</version>
                 <configuration>
                     <resultsDirectory>${project.build.directory}/cucumber-reports/allure-results</resultsDirectory>
                     <reportDirectory>${project.build.directory}/cucumber-reports/allure-html</reportDirectory>
                 </configuration>
                 <executions>
-                    <!-- Generate Allure HTML report -->
                     <execution>
                         <id>allure-report</id>
                         <phase>verify</phase>
@@ -133,13 +132,38 @@
                             <goal>report</goal>
                         </goals>
                     </execution>
-
-                    <!-- Auto-open Allure report in browser -->
                     <execution>
                         <id>allure-serve</id>
                         <phase>verify</phase>
                         <goals>
                             <goal>serve</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- ✅ Clean up after build -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.3.2</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${project.build.directory}</directory>
+                            <excludes>
+                                <exclude>cucumber-reports/**</exclude>
+                                <exclude>screenshots/**</exclude>
+                            </excludes>
+                        </fileset>
+                    </filesets>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>clean-after-build</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>clean</goal>
                         </goals>
                     </execution>
                 </executions>
