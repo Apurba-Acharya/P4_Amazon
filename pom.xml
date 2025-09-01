@@ -115,34 +115,44 @@
                 </configuration>
             </plugin>
 
-            <!-- ✅ Allure Maven Plugin -->
+            <!-- ✅ Allure Maven Plugin (only config, no executions) -->
             <plugin>
                 <groupId>io.qameta.allure</groupId>
                 <artifactId>allure-maven</artifactId>
                 <version>2.15.0</version>
                 <configuration>
-                    <resultsDirectory>${project.build.directory}/cucumber-reports/allure-results</resultsDirectory>
+                    <!-- Raw results folder -->
+                    <resultsDirectory>${project.build.directory}/allure-results</resultsDirectory>
+                    <!-- Where final report will be written when you run mvn allure:report -->
                     <reportDirectory>${project.build.directory}/cucumber-reports/allure-html</reportDirectory>
                 </configuration>
+            </plugin>
+
+            <!-- ✅ Exec Plugin to auto-open report (only works if report exists) -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.1.0</version>
                 <executions>
                     <execution>
-                        <id>allure-report</id>
+                        <id>open-allure-report</id>
                         <phase>verify</phase>
                         <goals>
-                            <goal>report</goal>
+                            <goal>exec</goal>
                         </goals>
-                    </execution>
-                    <execution>
-                        <id>allure-serve</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>serve</goal>
-                        </goals>
+                        <configuration>
+                            <executable>cmd</executable>
+                            <arguments>
+                                <argument>/c</argument>
+                                <argument>start</argument>
+                                <argument>${project.build.directory}\cucumber-reports\allure-html\index.html</argument>
+                            </arguments>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
 
-            <!-- ✅ Clean up after build -->
+            <!-- ✅ Clean plugin (don’t delete reports) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
@@ -158,23 +168,15 @@
                         </fileset>
                     </filesets>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>clean-after-build</id>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>clean</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
 
+            <!-- ✅ Surefire (runs tests) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M9</version>
                 <configuration>
-                    <skipTests>true</skipTests>
+                    <skipTests>false</skipTests>
                 </configuration>
             </plugin>
         </plugins>

@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import utilities.AppLogger;
 
 import java.time.Duration;
 import java.util.List;
@@ -17,7 +18,6 @@ public class AddressPage {
     WebDriverWait wait;
     private String deliName;
     private String deliAddress;
-    private String deliPayment;
 
     public AddressPage(WebDriver driver) {
         this.driver = driver;
@@ -31,12 +31,14 @@ public class AddressPage {
                 String deliN = name.getText().trim();
                 deliName = deliN;
                 if (deliN.equalsIgnoreCase(perName)) {
-                    System.out.println("Entered delivery name is matched: " + deliN);
+//                    System.out.println("Entered delivery name is matched: " + deliN);
+                    AppLogger.info("Entered delivery name is matched: " + deliN);
                     break;
                 }
             }
         } catch (Exception e) {
-            System.out.println("Entered delivery name is not found: " + e.getMessage());
+//            System.out.println("Entered delivery name is not found: " + e.getMessage());
+            AppLogger.error("Entered delivery name is not found: " + e.getMessage());
         }
 
     }
@@ -55,20 +57,23 @@ public class AddressPage {
                 String deliAdd = address.getText().trim();
                 deliAddress = deliAdd;
                 if (deliAdd.equalsIgnoreCase(deliverTo)) {
-                    System.out.println("Entered delivery address found: " + deliAdd);
+//                    System.out.println("Entered delivery address found: " + deliAdd);
+                    AppLogger.info("Entered delivery address found: " + deliAdd);
                     clickWithDelay(address, 10);
                     break;
                 }
             }
         } catch (Exception e) {
-            System.out.println("Entered delivery address is not found: " + e.getMessage());
+//            System.out.println("Entered delivery address is not found: " + e.getMessage());
+            AppLogger.error("Entered delivery address is not found: " + e.getMessage());
         }
 
         try {
             WebElement thisAddress = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(@id, \"secondary\")]/child::span/child::input[contains(@class, \"a-button-input\")]")));
             clickWithDelay(thisAddress, 5);
         }catch (Exception e){
-            System.out.println("Deliver to this address button not found");
+//            System.out.println("Deliver to this address button not found");
+            AppLogger.warn("Deliver to this address button not found");
         }
     }
 
