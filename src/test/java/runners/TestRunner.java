@@ -8,7 +8,7 @@ import io.cucumber.testng.CucumberOptions;
         glue = {"stepDefinitions", "hooks"},        // step definitions + hooks
         plugin = {
                 "pretty",
-                "html:target/cucumber-reports/cucumber.html",   // Default Cucumber HTML
+                "html:target/cucumber-reports/cucumber.html",   // cucumber.html report
                 "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm"  // Allure plugin
         },
         monochrome = true,
