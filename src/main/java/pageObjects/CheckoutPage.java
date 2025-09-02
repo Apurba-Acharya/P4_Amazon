@@ -4,6 +4,7 @@ import managers.DriverManager;
 import managers.PageObjectManager;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.*;
+import utilities.AppLogger;
 
 import java.time.Duration;
 import java.util.List;
@@ -25,27 +26,33 @@ public class CheckoutPage {
         try {
             List<WebElement> unavailElems = driver.findElements(By.xpath("//*[contains(@id, 'outOfStock')]/descendant::span[1]"));
             if (!unavailElems.isEmpty() && unavailElems.get(0).getText().trim().equals("Currently unavailable.")) {
-                System.out.println("You are trying to buy an unavailable product");
+//                System.out.println("You are trying to buy an unavailable product");
+                AppLogger.warn("You are trying to buy an unavailable product.");
                 System.exit(0); // Immediately terminate execution
             } else {
+                AppLogger.info("Product available. Proceeding to add to cart.");
                 WebElement addToCartBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(@class, 'a-spacing-none a-padding')]//descendant::input[contains(@id, 'add-to-cart-button')]")));
                 clickWithDelay(addToCartBtn, 5);
             }
         } catch (Exception e) {
-            System.out.println("Error while checking availability or adding to cart: " + e.getMessage());
+//            System.out.println("Error while checking availability or adding to cart: " + e.getMessage());
+            AppLogger.error("Error while checking availability or adding to cart: " + e.getMessage());
         }
     }
 
     public void proceedToCheckout() {
+        AppLogger.info("Proceeding to checkout...");
         WebElement checkOut = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(@name, \"proceedToRetailCheckout\")]")));
         clickWithDelay(checkOut, 5);
     }
 
     public void cartbutton(){
+        AppLogger.info("Clicking cart button...");
         WebElement cButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(@class, \"primary-cart-button\")]/descendant::input")));
         clickWithDelay(cButton, 5);
     }
 
+//    Uncheck remaining product present in shopping cart:
 //    public void productToKeep(){
 //        // Product name that should remain selected
 //        String productToKeep = homePage.SelcProd();
@@ -61,12 +68,12 @@ public class CheckoutPage {
 //            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", checkbox);
 //
 //            if (productName.equals(productToKeep)) {
-//                // ✅ Keep this one selected
+//                // Keep this one selected
 //                if (!checkbox.isSelected()) {
 //                    clickWithDelay(checkbox, 5);
 //                }
 //            } else {
-//                // ❌ Uncheck all other products
+//                // Uncheck all other products
 //                if (checkbox.isSelected()) {
 //                    clickWithDelay(checkbox, 5);
 //                }
