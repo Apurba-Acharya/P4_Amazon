@@ -31,7 +31,7 @@ public class DriverManager {
                     break;
 
                 default:
-                    throw new IllegalArgumentException("❌ Unsupported browser: " + browser);
+                    throw new IllegalArgumentException("Unsupported browser: " + browser);
             }
             driver.manage().window().maximize();
         }
