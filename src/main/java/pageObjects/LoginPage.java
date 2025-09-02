@@ -63,8 +63,8 @@ public class LoginPage {
         try {
 
             if (otpBox.isDisplayed()) {
+//                System.out.println("OTP box displayed. Waiting for 20 seconds...");
                 AppLogger.warn("OTP box displayed. Waiting for user input...");
-                System.out.println("OTP box displayed. Waiting for 20 seconds...");
                 clickWithDelay(otpBox, 20);
                 clickWithDelay(otpSubmitButton, 0);
                 AppLogger.info("Submitted OTP.");
