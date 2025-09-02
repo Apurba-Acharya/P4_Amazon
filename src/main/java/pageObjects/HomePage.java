@@ -4,6 +4,8 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import utilities.AppLogger;
+
 import java.time.Duration;
 import java.util.List;
 
@@ -26,14 +28,17 @@ public class HomePage {
             // Continue shopping button:
             WebElement continueBtn = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(@class, 'a-button-inner')]//button")));
             if (continueBtn.getText().equalsIgnoreCase("Continue shopping")) {
+                AppLogger.info("Clicking on 'Continue shopping' button.");
                 clickWithDelay(continueBtn, 5);
             }
         } catch (TimeoutException e) {
-            System.out.println("'Continue shopping' button not found, proceeding to search...");
+//            System.out.println("'Continue shopping' button not found, proceeding to search...");
+            AppLogger.warn("'Continue shopping' button not found, proceeding to search...");
         }
     }
 
     public void searchProduct(String product) {
+        AppLogger.info("Searching for product: " + product);
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//label[text()='Search Amazon.in']/following-sibling::input"))).sendKeys(product);
         WebElement sePrduct = driver.findElement(By.xpath("//span[@aria-label='Go']/child::input"));
         clickWithDelay(sePrduct, 5);
@@ -42,10 +47,12 @@ public class HomePage {
     public void filterByBrand(String brandName) {
         try{
             // Check if brand is in the initial list
+            AppLogger.info("Filtering by brand: " + brandName);
             List<WebElement> brands = driver.findElements(By.xpath("//div[@id='brandsRefinements']/descendant::span[2]/child::span/descendant::span[1]/child::a"));
             boolean brandFound = false;
             for (WebElement brand : brands) {
                 if (brand.getText().equalsIgnoreCase(brandName)) {
+                    AppLogger.info("Brand found in initial list: " + brandName);
                     clickWithDelay(brand, 5);
                     brandFound = true;
                     break;
@@ -54,6 +61,7 @@ public class HomePage {
 
             // If brand not found, click "See more" and search again
             if (!brandFound) {
+                AppLogger.warn("Brand not found in initial list, expanding 'See more'...");
                 WebElement seeMore = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[contains(@aria-label, \"Brands\")]/descendant::span[text()=\"See more\"]")));
                 clickWithDelay(seeMore, 5);
 
@@ -62,21 +70,24 @@ public class HomePage {
                 List<WebElement> moreBrands = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//div[@id='brandsRefinements']/descendant::li[8]/descendant::ul/descendant::a")));
                 for (WebElement brand : moreBrands) {
                     if (brand.getText().equalsIgnoreCase(brandName)) {
+                        AppLogger.info("Brand found after expanding: " + brandName);
                         clickWithDelay(brand, 5);
                         break;
                     }
                 }
             }
         }catch (TimeoutException e) {
-            System.out.println("Search or brand selection elements not found, skipping...");
+            AppLogger.error("Search or brand selection elements not found: " + e.getMessage());
         }
     }
 
     public void sortBy(String sortOption) {
+        AppLogger.info("Sorting by option: " + sortOption);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class=\"a-dropdown-container\"]/descendant::span[2]"))).click();
         List<WebElement> sortBy = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(".a-nostyle.a-list-link>li>a")));
         for (WebElement sorted : sortBy) {
             if (sorted.getText().equalsIgnoreCase(sortOption)) {
+                AppLogger.info("Selected sort option: " + sortOption);
                 clickWithDelay(sorted, 5);
                 break;
             }
@@ -84,28 +95,32 @@ public class HomePage {
     }
 
     public void listOfProducts(String prodC){
+        AppLogger.info("Looking for product in list: " + prodC);
         List<WebElement> products = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//*[contains(@class, \"puisg-row\")]/descendant::h2/child::span")));
         boolean found = false;
         for (WebElement prdts : products) {
             String Prdts = prdts.getText().trim();
             selectedProduct = Prdts;
             if (Prdts.equalsIgnoreCase(prodC)) {
+                AppLogger.info("Product found: " + Prdts + " — clicking it.");
                 clickWithDelay(prdts, 5);
                 found = true;
                 break;
             }
         }
         if (!found) {
-            System.out.println("Product not found from the list...");
+            AppLogger.warn("Product not found from the list: " + prodC);
         }
     }
 
     public String SelcProd() {
         String prductSelect = driver.findElement(By.xpath("//*[contains(@id, \"centerCol\")]/descendant::span[@id=\"productTitle\"]")).getText().trim();
+        AppLogger.info("Selected product title on detail page: " + prductSelect);
         return prductSelect;
     }
 
     public String getSelProd() {
+        AppLogger.info("Returning selected product from list: " + selectedProduct);
         return selectedProduct;
     }
 }
