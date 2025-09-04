@@ -37,6 +37,10 @@ public class HomePage {
         }
     }
 
+
+
+
+
     public void searchProduct(String product) {
         AppLogger.info("Searching for product: " + product);
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//label[text()='Search Amazon.in']/following-sibling::input"))).sendKeys(product);
