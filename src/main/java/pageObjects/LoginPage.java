@@ -58,10 +58,9 @@ public class LoginPage {
     }
 
     public void verifyOTP(){
-        WebElement otpBox = driver.findElement(By.xpath("//*[contains(@id, 'box-otp')]"));
-        WebElement otpSubmitButton = driver.findElement(By.xpath("//*[contains(text(), \"Submit code\")]"));
         try {
-
+            WebElement otpBox = driver.findElement(By.xpath("//*[contains(@id, 'box-otp')]"));
+            WebElement otpSubmitButton = driver.findElement(By.xpath("//*[contains(text(), \"Submit code\")]"));
             if (otpBox.isDisplayed()) {
 //                System.out.println("OTP box displayed. Waiting for 20 seconds...");
                 AppLogger.warn("OTP box displayed. Waiting for user input...");

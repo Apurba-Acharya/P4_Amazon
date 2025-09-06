@@ -37,9 +37,16 @@ public class HomePage {
         }
     }
 
-
-
-
+    public void ownerName(String pON){
+        try{
+            String displayedName = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(@href, \"homepage.html?ref_=nav_youraccount\")]/descendant::span[1]"))).getText().trim();
+            if (displayedName.equalsIgnoreCase(pON)){
+                AppLogger.info("Account name matched... " + displayedName);
+            }
+        }catch(TimeoutException e){
+            AppLogger.error("Account name is mismatched..." + e.getMessage());
+        }
+    }
 
     public void searchProduct(String product) {
         AppLogger.info("Searching for product: " + product);
