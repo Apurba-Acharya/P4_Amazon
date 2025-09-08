@@ -1,3 +1,4 @@
+@userLogin
 Feature: userLogin
   As a registered user
   I want to login with valid credentials

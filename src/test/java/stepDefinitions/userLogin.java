@@ -8,10 +8,9 @@ import managers.DriverManager;
 import managers.PageObjectManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.asserts.SoftAssert;
 import pageObjects.*;
 
-public class POM {
+public class userLogin {
     private static final Logger log = LoggerFactory.getLogger(ProductBuySteps.class);
     PageObjectManager pom = new PageObjectManager(DriverManager.getDriver());
     HomePage homePage = pom.getHomePage();
