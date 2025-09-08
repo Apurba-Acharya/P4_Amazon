@@ -26,6 +26,6 @@ public class TestHooks {
             BrowserUtils.saveScreenshot(driver, scenario.getName());
             System.out.println("Failed screenshorts attached...");
         }
-        DriverManager.quitDriver();
+//        DriverManager.quitDriver();  //DriverManager dependency.
     }
 }

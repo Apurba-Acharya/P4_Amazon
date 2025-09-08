@@ -78,7 +78,7 @@ public class DriverManager {
         }
     }
 
-    public static void quitDriver() {
+    public static void quitDriver() {           // TestHooks dependency
         if (driver != null) {
             driver.quit();
             driver = null;
