@@ -25,6 +25,7 @@ public class checkoutAndDeliveredTo {
     public void user_proceeds_to_checkout() {
         checkOut.isProductAvailable();
         checkOut.cartbutton();
+        checkOut.productToKeep();
         checkOut.proceedToCheckout();
     }
     @When("user enters delivery name {string}")
