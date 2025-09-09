@@ -65,6 +65,7 @@ public class ProductBuySteps {
     public void user_proceeds_to_checkout() {
         checkOut.isProductAvailable();
         checkOut.cartbutton();
+        checkOut.productToKeep();
         checkOut.proceedToCheckout();
     }
 
