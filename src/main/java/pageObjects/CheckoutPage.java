@@ -52,33 +52,30 @@ public class CheckoutPage {
         clickWithDelay(cButton, 5);
     }
 
-//    Uncheck remaining product present in shopping cart:
-//    public void productToKeep(){
-//        // Product name that should remain selected
-//        String productToKeep = homePage.SelcProd();
-//
-//        // Get all product containers in the cart
-//        List<WebElement> products = driver.findElements(By.xpath("//*[contains(@data-csa-c-painter, \"shoppingcart\")]/descendant::div[contains(@role, \"listitem\")]/descendant::h4/descendant::span[contains(@class, \"cut\")]"));
-//        for (WebElement product : products) {
-//            // Extract product name
-//            String productName = product.getText().trim();
-//
-//            // Locate the checkbox inside the product container
-//            WebElement checkbox = product.findElement(By.xpath("//div[@role='listitem']/descendant::input[contains(@aria-label, \"Select\")]/following-sibling::i"));
-//            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", checkbox);
-//
-//            if (productName.equals(productToKeep)) {
-//                // Keep this one selected
-//                if (!checkbox.isSelected()) {
-//                    clickWithDelay(checkbox, 5);
-//                }
-//            } else {
-//                // Uncheck all other products
-//                if (checkbox.isSelected()) {
-//                    clickWithDelay(checkbox, 5);
-//                }
-//            }
-//        }
-//
-//    }
+   //Uncheck remaining product present in shopping cart:
+    public void productToKeep(){
+        // Product name that should remain selected
+        String productToKeep = homePage.SelcProd();
+
+        // Get all product containers in the cart
+        List<WebElement> products = driver.findElements(By.xpath("//*[contains(@data-csa-c-painter, \"shoppingcart\")]//span[contains(@class, \"cut\")]"));
+        for (WebElement product : products) {
+            // Extract product name
+            String productName = product.getText().trim();
+
+            // Locate the checkbox inside the product container
+            WebElement checkbox = product.findElement(By.xpath(".//div[@role='listitem']/descendant::input[contains(@aria-label, \"Select\")]"));
+            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", checkbox);
+
+            if (productName.equalsIgnoreCase(productToKeep)) {
+                // Keep this one selected
+                if (!checkbox.isSelected()) {
+                    clickWithDelay(checkbox, 5);
+                }
+            } else if (checkbox.isSelected()){
+                // Uncheck all other products
+                clickWithDelay(checkbox, 5);
+            }
+        }
+    }
 }
