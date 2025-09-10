@@ -39,10 +39,10 @@ public class LoginPage {
             e.sendKeys(Character.toString(ch));
             Thread.sleep(1000);
         }
-        AppLogger.info("Entered email: " + email);
+        AppLogger.info("Entered email/mobile no. : " + email);
         WebElement loginEmail = driver.findElement(By.xpath("//input[@type=\"submit\"]"));
         clickWithDelay(loginEmail, 5);
-        AppLogger.info("Clicked on Email Submit button.");
+        AppLogger.info("Clicked on Email/mobile no. Submit button.");
     }
 
     public void password(String passwo) throws InterruptedException {

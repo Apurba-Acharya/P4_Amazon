@@ -55,7 +55,7 @@ public class CheckoutPage {
    //Uncheck remaining product present in shopping cart:
     public void productToKeep(){
         // Product name that should remain selected
-        String productToKeep = homePage.SelcProd();
+        //String productToKeep = homePage.SelcProd();
 
         // Get all product containers in the cart
         List<WebElement> products = driver.findElements(By.xpath("//*[contains(@data-csa-c-painter, \"shoppingcart\")]//span[contains(@class, \"cut\")]"));
@@ -67,7 +67,7 @@ public class CheckoutPage {
             WebElement checkbox = product.findElement(By.xpath(".//div[@role='listitem']/descendant::input[contains(@aria-label, \"Select\")]"));
             ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", checkbox);
 
-            if (productName.equalsIgnoreCase(productToKeep)) {
+            if (productName.equalsIgnoreCase(homePage.getSelProd())) {
                 // Keep this one selected
                 if (!checkbox.isSelected()) {
                     clickWithDelay(checkbox, 5);
