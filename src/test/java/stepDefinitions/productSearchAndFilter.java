@@ -22,6 +22,8 @@ public class productSearchAndFilter {
     PaymentPage paymentPage = pom.getPaymentPage();
     SoftAssert soft = new SoftAssert();
 
+
+
     @Given("user searches for {string}")
     public void user_searches_for(String productKey) {
         String product = ConfigReader.getProperty(productKey);
