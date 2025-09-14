@@ -1,4 +1,4 @@
-@checkoutAndDeliveredTo
+
   Feature: checkoutAndDeliveredTo
 
     Scenario: Checkout and deliver to details

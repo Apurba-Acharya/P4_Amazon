@@ -1,4 +1,4 @@
-@productSearchAndFilter
+
 Feature: productSearchAndFilter
 
   Scenario: Search the specific product and filter out the specific brand name

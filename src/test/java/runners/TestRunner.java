@@ -2,9 +2,10 @@ package runners;
 
 import io.cucumber.testng.AbstractTestNGCucumberTests;
 import io.cucumber.testng.CucumberOptions;
+import org.testng.annotations.DataProvider;
 
 @CucumberOptions(
-        features = "src/test/resources/features",   // feature files
+        features = {"src/test/resources/features/userLogin.feature", "src/test/resources/features/productSearchAndFilter.feature", "src/test/resources/features/checkoutAndDeliveredTo.feature", "src/test/resources/features/paymentAndConfirmation.feature"},
         glue = {"stepDefinitions", "hooks"},        // step definitions + hooks
         plugin = {
                 "pretty",
@@ -15,4 +16,10 @@ import io.cucumber.testng.CucumberOptions;
         dryRun = false
 )
 public class TestRunner extends AbstractTestNGCucumberTests {
+
+        @Override
+        @DataProvider(parallel = false)   // 🚨 turn off parallel execution
+        public Object[][] scenarios() {
+                return super.scenarios();
+        }
 }
