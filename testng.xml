@@ -9,4 +9,5 @@
             <class name="runners.checkout"/>
         </classes>
     </test>
+
 </suite>
