@@ -4,9 +4,9 @@
     <test name="Amazon Tests" preserve-order="true">
         <classes>
             <class name="runners.Login"/>
-<!--            <class name="runners.SearchFilter"/>-->
-<!--            <class name="runners.Payment"/>-->
-<!--            <class name="runners.checkout"/>-->
+            <class name="runners.SearchFilter"/>
+            <class name="runners.Payment"/>
+            <class name="runners.checkout"/>
         </classes>
     </test>
 </suite>
