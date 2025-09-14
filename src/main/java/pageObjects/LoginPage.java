@@ -34,27 +34,59 @@ public class LoginPage {
     }
 
     public void Email(String email) throws InterruptedException {
-        WebElement e = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(@id, \"email_login\")]")));
+        WebElement e = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//*[contains(@id, \"email_login\")]")));
+
         for (char ch : email.toCharArray()) {
             e.sendKeys(Character.toString(ch));
             Thread.sleep(1000);
         }
         AppLogger.info("Entered email/mobile no. : " + email);
+
         WebElement loginEmail = driver.findElement(By.xpath("//input[@type=\"submit\"]"));
         clickWithDelay(loginEmail, 5);
         AppLogger.info("Clicked on Email/mobile no. Submit button.");
+
+        // Check for "Looks like you are new to Amazon"
+        try {
+            WebElement errorMsg = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                    By.xpath("//*[contains(text(), \"Looks like you are new to Amazon\")]")));
+
+            if (errorMsg.isDisplayed()) {
+                AppLogger.error("Login failed: Looks like you are new to Amazon.");
+                throw new RuntimeException("Terminating test: Invalid email/mobile no.");
+            }
+        } catch (TimeoutException ex) {
+            AppLogger.info("No email error displayed. Continuing...");
+        }
     }
 
     public void password(String passwo) throws InterruptedException {
-        WebElement f = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[type*=\"password\"]")));
+        WebElement f = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.cssSelector("input[type*=\"password\"]")));
+
         for (char chP : passwo.toCharArray()) {
             f.sendKeys(Character.toString(chP));
             Thread.sleep(3000);
         }
         AppLogger.info("Entered password (hidden).");
+
         WebElement loginPass = driver.findElement(By.cssSelector("input[id*=\"signIn\"]"));
         clickWithDelay(loginPass, 10);
         AppLogger.info("Clicked on Password Submit button.");
+
+        // Check for error message after clicking
+        try {
+            WebElement errorMsg = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                    By.xpath("//*[contains(text(), \"Your password is incorrect\")]")));
+
+            if (errorMsg.isDisplayed()) {
+                AppLogger.error("Login failed: Your password is incorrect.");
+                throw new RuntimeException("Terminating test: Incorrect password.");
+            }
+        } catch (TimeoutException e) {
+            AppLogger.info("No password error displayed. Continuing...");
+        }
     }
 
     public void verifyOTP(){
