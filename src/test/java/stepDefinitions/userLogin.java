@@ -21,7 +21,7 @@ public class userLogin {
         homePage.continueShoppingButton();
     }
 
-    @When("user is logged in with emaiL {string} and passworD {string}")
+    @When("user is logged in with email_mobileNO. {string} and passworD {string}")
     public void user_is_logged_in(String emailKey, String passwordKey) throws InterruptedException {
         String email = ConfigReader.getProperty(emailKey);     // fetch from config.properties
         String password = ConfigReader.getProperty(passwordKey); // fetch from config.properties

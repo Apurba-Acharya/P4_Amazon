@@ -1,4 +1,4 @@
-@userLogin
+
 Feature: userLogin
   As a registered user
   I want to login with valid credentials
@@ -6,5 +6,5 @@ Feature: userLogin
 
   Scenario: Successful login with valid credentials
     Given user is on the login page
-    When user is logged in with emaiL "test.email" and passworD "test.password"
+    When user is logged in with email_mobileNO. "test.email/mobileNO." and passworD "test.password"
     Then user should be logged in successfully "test.ownerName"
