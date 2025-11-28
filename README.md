@@ -54,11 +54,11 @@ TestHooks.java
 
 🔹 runners/
 Each runner executes a specific feature (TestNG + Cucumber).
-Example: Login.java, SearchFilter.java, checkout.java, Payment.java
+-> Example: Login.java, SearchFilter.java, checkout.java, Payment.java
 
 🔹 stepDefinitions/
 Glue code connecting Gherkin steps to Page Object methods.
-Examples: userLogin.java, productSearchAndFilter.java, checkoutAndDeliveredTo.java, paymentAndConfirmation.java
+-> Examples: userLogin.java, productSearchAndFilter.java, checkoutAndDeliveredTo.java, paymentAndConfirmation.java
 
 3️⃣ src/test/resources — Test Data & Features
 🔹 config/
@@ -70,6 +70,5 @@ Files:testdata.json, users.csv
 
 🔹 features/
 Contains all BDD scenarios written in Gherkin:
-
-Examples: userLogin.feature, productSearchAndFilter.feature, checkoutAndDeliveredTo.feature, paymentAndConfirmation.feature
+-> Examples: userLogin.feature, productSearchAndFilter.feature, checkoutAndDeliveredTo.feature, paymentAndConfirmation.feature
 
