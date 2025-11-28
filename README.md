@@ -8,8 +8,8 @@
   see the runtime logs. For version control we are using g. Also we have integrated ci/cd in our
   pipeline using genkins.
 
-### **Folder Structure explanation:**
-🔄 Execution Flow (High-Level)
+### **🔄 Folder Structure explanation:**
+ Execution Flow (High-Level)
 Feature File (.feature)
         ↓
 Step Definitions
