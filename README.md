@@ -24,7 +24,8 @@ Execution on Browser
         ↓
 Allure Report + Logs + Screenshots
 
-1️⃣ src/main/java — Core Framework Layer
+1️⃣ src/main/java — 
+managers/
 | File                     | Purpose                                               |
 | ------------------------ | ----------------------------------------------------- |
 | `DriverManager.java`     | Handles WebDriver initialization, ThreadLocal support |
@@ -45,7 +46,7 @@ Each class contains:
 | `BrowserUtils.java` | Screenshots, delay click, Allure attachments |
 | `AppLogger.java`    | Logging wrapper                              |
 
-2️⃣ src/test/java — Test Execution Layer
+2️⃣ src/test/java —
 🔹 hooks/
 TestHooks.java
     @Before → Launch browser, open base URL
@@ -55,6 +56,12 @@ TestHooks.java
 🔹 runners/
 Each runner executes a specific feature (TestNG + Cucumber).
 -> Example: Login.java, SearchFilter.java, checkout.java, Payment.java
+    @CucumberOptions(
+    features = "src/test/resources/features/checkoutAndDeliveredTo.feature",
+    glue = {"stepDefinitions", "hooks"},
+    plugin = {"pretty","html:target/cucumber-reports.html"}
+    )
+    public class checkout extends AbstractTestNGCucumberTests {}
 
 🔹 stepDefinitions/
 Glue code connecting Gherkin steps to Page Object methods.
