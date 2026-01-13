@@ -2,6 +2,8 @@ package pageObjects;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import utilities.AppLogger;
@@ -22,25 +24,50 @@ public class HomePage {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         this.action = new Actions(driver);
+        PageFactory.initElements(driver, this);
     }
+
+    @FindBy(xpath = "//*[contains(@class, 'a-button-inner')]//button")
+    private WebElement continueShoppingBtn;
+    @FindBy(xpath = "//*[contains(@href,'homepage.html?ref_=nav_youraccount')]/descendant::span[1]")
+    private WebElement ownerNameLabel;
+    @FindBy(xpath = "//label[text()='Search Amazon.in']/following-sibling::input")
+    private WebElement searchInput;
+    @FindBy(xpath = "//span[@aria-label='Go']/child::input")
+    private WebElement searchButton;
+    @FindBy(xpath = "//div[@id='brandsRefinements']/descendant::span[2]/child::span/descendant::span[1]/child::a")
+    private List<WebElement> brandsList;
+    @FindBy(xpath = "//*[contains(@aria-label,'Brands')]/descendant::span[text()='See more']")
+    private WebElement seeMoreBrandsArrow;
+    @FindBy(css = "#brandsRefinements>ul>[role=\"presentation\"]>li>span>div>div>ul>span>li>span>a")
+    private WebElement waitForRemainingBrands;
+    @FindBy(xpath = "//div[@id='brandsRefinements']/descendant::li[8]/descendant::ul/descendant::a")
+    private List<WebElement> moreBrands;
+    @FindBy(xpath = "//span[@class='a-dropdown-container']/descendant::span[2]")
+    private WebElement sortDropdown;
+    @FindBy(css = ".a-nostyle.a-list-link>li>a")
+    private List<WebElement> sortOptions;
+    @FindBy(xpath = "//*[contains(@class,'puisg-row')]/descendant::h2/child::span")
+    private List<WebElement> productTitles;
+    @FindBy(xpath = "//*[contains(@id,'centerCol')]//span[@id='productTitle']")
+    private WebElement productTitle;
 
     public void continueShoppingButton(){
         try {
             // Continue shopping button:
-            WebElement continueBtn = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(@class, 'a-button-inner')]//button")));
+            WebElement continueBtn = wait.until(ExpectedConditions.visibilityOf(continueShoppingBtn));
             if (continueBtn.getText().equalsIgnoreCase("Continue shopping")) {
                 AppLogger.info("Clicking on 'Continue shopping' button.");
                 clickWithDelay(continueBtn, 5);
             }
         } catch (TimeoutException e) {
-//            System.out.println("'Continue shopping' button not found, proceeding to search...");
             AppLogger.warn("'Continue shopping' button not found, proceeding to search...");
         }
     }
 
     public void ownerName(String pON){
         try{
-            String displayedName = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(@href, \"homepage.html?ref_=nav_youraccount\")]/descendant::span[1]"))).getText().trim();
+            String displayedName = wait.until(ExpectedConditions.visibilityOf(ownerNameLabel)).getText().trim();
             if (displayedName.equalsIgnoreCase(pON)){
                 AppLogger.info("Account name matched... " + displayedName);
             }
@@ -51,18 +78,18 @@ public class HomePage {
 
     public void searchProduct(String product) {
         AppLogger.info("Searching for product: " + product);
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//label[text()='Search Amazon.in']/following-sibling::input"))).sendKeys(product);
-        WebElement sePrduct = driver.findElement(By.xpath("//span[@aria-label='Go']/child::input"));
-        clickWithDelay(sePrduct, 5);
+        wait.until(ExpectedConditions.elementToBeClickable(searchInput)).sendKeys(product);
+//        WebElement sePrduct = driver.findElement(By.xpath("//span[@aria-label='Go']/child::input"));
+        clickWithDelay(searchButton, 5);
     }
 
     public void filterByBrand(String brandName) {
         try{
             // Check if brand is in the initial list
             AppLogger.info("Filtering by brand: " + brandName);
-            List<WebElement> brands = driver.findElements(By.xpath("//div[@id='brandsRefinements']/descendant::span[2]/child::span/descendant::span[1]/child::a"));
+//            List<WebElement> brands = driver.findElements(By.xpath("//div[@id='brandsRefinements']/descendant::span[2]/child::span/descendant::span[1]/child::a"));
             boolean brandFound = false;
-            for (WebElement brand : brands) {
+            for (WebElement brand : brandsList) {
                 if (brand.getText().equalsIgnoreCase(brandName)) {
                     AppLogger.info("Brand found in initial list: " + brandName);
                     clickWithDelay(brand, 8);
@@ -74,12 +101,10 @@ public class HomePage {
             // If brand not found, click "See more" and search again
             if (!brandFound) {
                 AppLogger.warn("Brand not found in initial list, expanding 'See more'...");
-                WebElement seeMore = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[contains(@aria-label, \"Brands\")]/descendant::span[text()=\"See more\"]")));
-                clickWithDelay(seeMore, 8);
+                wait.until(ExpectedConditions.elementToBeClickable(seeMoreBrandsArrow));
+                clickWithDelay(seeMoreBrandsArrow, 8);
 
-                // Wait for expanded list
-                wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#brandsRefinements>ul>[role=\"presentation\"]>li>span>div>div>ul>span>li>span>a")));
-                List<WebElement> moreBrands = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//div[@id='brandsRefinements']/descendant::li[8]/descendant::ul/descendant::a")));
+                wait.until(ExpectedConditions.visibilityOf(waitForRemainingBrands));
                 for (WebElement brand : moreBrands) {
                     if (brand.getText().equalsIgnoreCase(brandName)) {
                         AppLogger.info("Brand found after expanding: " + brandName);
@@ -93,11 +118,11 @@ public class HomePage {
         }
     }
 
-    public void sortBy(String sortOption) {
+    public void sortBy(String sortOption) { //pending
         AppLogger.info("Sorting by option: " + sortOption);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class=\"a-dropdown-container\"]/descendant::span[2]"))).click();
+        wait.until(ExpectedConditions.visibilityOf(sortDropdown)).click();
         List<WebElement> sortBy = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(".a-nostyle.a-list-link>li>a")));
-        for (WebElement sorted : sortBy) {
+        for (WebElement sorted : sortOptions) {
             if (sorted.getText().equalsIgnoreCase(sortOption)) {
                 AppLogger.info("Selected sort option: " + sortOption);
                 clickWithDelay(sorted, 5);
@@ -108,7 +133,7 @@ public class HomePage {
 
     public void listOfProducts(String prodC) {
         AppLogger.info("Looking for product in list: " + prodC);
-        List<WebElement> products = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//*[contains(@class, \"puisg-row\")]/descendant::h2/child::span")));
+        List<WebElement> products = wait.until(ExpectedConditions.visibilityOf(productTitles));
         boolean found = false;
         String parentWindow = driver.getWindowHandle();
 
