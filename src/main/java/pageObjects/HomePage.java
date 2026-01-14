@@ -47,7 +47,7 @@ public class HomePage {
     private WebElement sortDropdown;
     @FindBy(css = ".a-nostyle.a-list-link>li>a")
     private List<WebElement> sortOptions;
-    @FindBy(xpath = "//*[contains(@class,'puisg-row')]/descendant::h2/child::span")
+    @FindBy(xpath = "//*[contains(@role,'listitem')]//a//h2")
     private List<WebElement> productTitles;
     @FindBy(xpath = "//*[contains(@id,'centerCol')]//span[@id='productTitle']")
     private WebElement productTitle;
@@ -79,7 +79,6 @@ public class HomePage {
     public void searchProduct(String product) {
         AppLogger.info("Searching for product: " + product);
         wait.until(ExpectedConditions.elementToBeClickable(searchInput)).sendKeys(product);
-//        WebElement sePrduct = driver.findElement(By.xpath("//span[@aria-label='Go']/child::input"));
         clickWithDelay(searchButton, 5);
     }
 
@@ -87,7 +86,6 @@ public class HomePage {
         try{
             // Check if brand is in the initial list
             AppLogger.info("Filtering by brand: " + brandName);
-//            List<WebElement> brands = driver.findElements(By.xpath("//div[@id='brandsRefinements']/descendant::span[2]/child::span/descendant::span[1]/child::a"));
             boolean brandFound = false;
             for (WebElement brand : brandsList) {
                 if (brand.getText().equalsIgnoreCase(brandName)) {
@@ -131,16 +129,14 @@ public class HomePage {
         }
     }
 
-    public void listOfProducts(String prodC) { //pending
+    public void listOfProducts(String prodC) {
         AppLogger.info("Looking for product in list: " + prodC);
-        List<WebElement> products = wait.until(ExpectedConditions.visibilityOfAllElements(productTitles));
+        wait.until(ExpectedConditions.visibilityOfAllElements(productTitles));
         boolean found = false;
         String parentWindow = driver.getWindowHandle();
-
-        for (WebElement prdts : products) {
+        for (WebElement prdts : productTitles) {
             String Prdts = prdts.getText().trim();
             selectedProduct = Prdts;
-
             if (Prdts.equalsIgnoreCase(prodC)) {
                 AppLogger.info("Product found: " + Prdts + " — clicking it.");
                 clickWithDelay(prdts, 8);

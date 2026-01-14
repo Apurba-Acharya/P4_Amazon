@@ -3,6 +3,8 @@ package pageObjects;
 import managers.DriverManager;
 import managers.PageObjectManager;
 import org.openqa.selenium.*;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.*;
 import utilities.AppLogger;
 
@@ -14,33 +16,39 @@ import static utilities.BrowserUtils.clickWithDelay;
 public class CheckoutPage {
     WebDriver driver;
     WebDriverWait wait;
-    PageObjectManager pom = new PageObjectManager(DriverManager.getDriver());
-    HomePage homePage = pom.getHomePage();
+//    PageObjectManager pom = new PageObjectManager(DriverManager.getDriver());
+//    HomePage homePage = pom.getHomePage();
 
     public CheckoutPage(WebDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        PageFactory.initElements(driver, this);
     }
+    @FindBy(xpath = "//*[contains(@id,'outOfStock')]/descendant::span[1]")
+    private List<WebElement> outOfStockMsg;
+    @FindBy(xpath = "//*[contains(@id,'add-to-cart-button')]")
+    private WebElement addToCartBtn;
+    @FindBy(name = "proceedToRetailCheckout")
+    private WebElement proceedToCheckoutBtn;
+    @FindBy(xpath = "//*[contains(@class,'primary-cart-button')]//input")
+    private WebElement cartBtn;
 
     public void isProductAvailable() {
         try {
-            List<WebElement> unavailElems = driver.findElements(By.xpath("//*[contains(@id, 'outOfStock')]/descendant::span[1]"));
-            if (!unavailElems.isEmpty() && unavailElems.get(0).getText().trim().equals("Currently unavailable.")) {
-//                System.out.println("You are trying to buy an unavailable product");
+            if (!outOfStockMsg.isEmpty() && outOfStockMsg.get(0).getText().trim().equals("Currently unavailable.")) {
                 AppLogger.warn("You are trying to buy an unavailable product.");
-                System.exit(0); // Immediately terminate execution
+                System.exit(0);
             } else {
                 AppLogger.info("Product available. Proceeding to add to cart.");
-                WebElement addToCartBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(@class, 'a-spacing-none a-padding')]//descendant::input[contains(@id, 'add-to-cart-button')]")));
+                wait.until(ExpectedConditions.visibilityOfAllElements(addToCartBtn));
                 clickWithDelay(addToCartBtn, 5);
             }
         } catch (Exception e) {
-//            System.out.println("Error while checking availability or adding to cart: " + e.getMessage());
             AppLogger.error("Error while checking availability or adding to cart: " + e.getMessage());
         }
     }
 
-    public void proceedToCheckout() {
+    public void proceedToCheckout() { //pending
         AppLogger.info("Proceeding to checkout...");
         WebElement checkOut = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(@name, \"proceedToRetailCheckout\")]")));
         clickWithDelay(checkOut, 5);
@@ -52,7 +60,6 @@ public class CheckoutPage {
         clickWithDelay(cButton, 5);
     }
 
-   //Uncheck remaining product present in shopping cart:
     public void productToKeep(){
 //        // Product name that should remain selected
 //        //String productToKeep = homePage.SelcProd();
