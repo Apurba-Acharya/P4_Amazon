@@ -24,6 +24,7 @@ public class CheckoutPage {
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         PageFactory.initElements(driver, this);
     }
+
     @FindBy(xpath = "//*[contains(@id,'outOfStock')]/descendant::span[1]")
     private List<WebElement> outOfStockMsg;
     @FindBy(xpath = "//*[contains(@id,'add-to-cart-button')]")
@@ -50,19 +51,19 @@ public class CheckoutPage {
 
     public void proceedToCheckout() { //pending
         AppLogger.info("Proceeding to checkout...");
-        WebElement checkOut = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(@name, \"proceedToRetailCheckout\")]")));
-        clickWithDelay(checkOut, 5);
+        wait.until(ExpectedConditions.visibilityOfAllElements(proceedToCheckoutBtn));
+        clickWithDelay(proceedToCheckoutBtn, 5);
     }
 
     public void cartbutton(){
         AppLogger.info("Clicking cart button...");
-        WebElement cButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(@class, \"primary-cart-button\")]/descendant::input")));
-        clickWithDelay(cButton, 5);
+        wait.until(ExpectedConditions.visibilityOfAllElements(cartBtn));
+        clickWithDelay(cartBtn, 5);
     }
 
     public void productToKeep(){
 //        // Product name that should remain selected
-//        //String productToKeep = homePage.SelcProd();
+//        String productToKeep = homePage.SelcProd();
 //
 //        // Get all product containers in the cart
 //        List<WebElement> products = driver.findElements(By.xpath("//*[contains(@data-csa-c-painter, \"shoppingcart\")]//span[contains(@class, \"cut\")]"));
