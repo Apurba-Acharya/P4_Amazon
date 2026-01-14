@@ -118,11 +118,11 @@ public class HomePage {
         }
     }
 
-    public void sortBy(String sortOption) { //pending
+    public void sortBy(String sortOption) {
         AppLogger.info("Sorting by option: " + sortOption);
         wait.until(ExpectedConditions.visibilityOf(sortDropdown)).click();
-        List<WebElement> sortBy = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(".a-nostyle.a-list-link>li>a")));
-        for (WebElement sorted : sortOptions) {
+        List<WebElement> sortBy = wait.until(ExpectedConditions.visibilityOfAllElements(sortOptions));
+        for (WebElement sorted : sortBy) {
             if (sorted.getText().equalsIgnoreCase(sortOption)) {
                 AppLogger.info("Selected sort option: " + sortOption);
                 clickWithDelay(sorted, 5);
@@ -131,9 +131,9 @@ public class HomePage {
         }
     }
 
-    public void listOfProducts(String prodC) {
+    public void listOfProducts(String prodC) { //pending
         AppLogger.info("Looking for product in list: " + prodC);
-        List<WebElement> products = wait.until(ExpectedConditions.visibilityOf(productTitles));
+        List<WebElement> products = wait.until(ExpectedConditions.visibilityOfAllElements(productTitles));
         boolean found = false;
         String parentWindow = driver.getWindowHandle();
 
@@ -162,14 +162,13 @@ public class HomePage {
                 break;
             }
         }
-
         if (!found) {
             AppLogger.warn("Product not found from the list: " + prodC);
         }
     }
 
     public String SelcProd() {
-        String prductSelect = driver.findElement(By.xpath("//*[contains(@id, \"centerCol\")]/descendant::span[@id=\"productTitle\"]")).getText().trim();
+        String prductSelect = productTitle.getText().trim();
         AppLogger.info("Selected product title on detail page: " + prductSelect);
         return prductSelect;
     }
