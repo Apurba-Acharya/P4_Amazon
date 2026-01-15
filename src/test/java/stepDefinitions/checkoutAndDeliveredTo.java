@@ -21,11 +21,12 @@ public class checkoutAndDeliveredTo {
     PaymentPage paymentPage = pom.getPaymentPage();
     SoftAssert soft = new SoftAssert();
 
-    @Given("user proceeds to checkout")
-    public void user_proceeds_to_checkout() {
+    @Given("user proceeds to checkout {string}")
+    public void user_proceeds_to_checkout(String prodTitle) {
+        String PRODTitle = ConfigReader.getProperty(prodTitle);
         checkOut.isProductAvailable();
         checkOut.cartbutton();
-        checkOut.productToKeep();
+        checkOut.selectCartItemByName(PRODTitle);
         checkOut.proceedToCheckout();
     }
     @When("user enters delivery name {string}")

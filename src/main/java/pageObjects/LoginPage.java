@@ -58,20 +58,16 @@ public class LoginPage {
 
     public void Email(String email) throws InterruptedException {
         WebElement e = wait.until(ExpectedConditions.visibilityOf(emailInput));
-
         for (char ch : email.toCharArray()) {
             e.sendKeys(Character.toString(ch));
             Thread.sleep(1000);
         }
         AppLogger.info("Entered email/mobile no. : " + email);
-
-//        WebElement loginEmail = driver.findElement(By.xpath("//input[@type=\"submit\"]"));
         clickWithDelay(emailSubmit, 5);
         AppLogger.info("Clicked on Email/mobile no. Submit button.");
 
         try {
             WebElement errorMsg = wait.until(ExpectedConditions.visibilityOf(emailError));
-
             if (errorMsg.isDisplayed()) {
                 AppLogger.error("Login failed: Looks like you are new to Amazon.");
                 throw new RuntimeException("Terminating test: Invalid email/mobile no.");
@@ -89,15 +85,12 @@ public class LoginPage {
             Thread.sleep(3000);
         }
         AppLogger.info("Entered password (hidden).");
-
-//        WebElement loginPass = driver.findElement(By.cssSelector("input[id*=\"signIn\"]"));
         clickWithDelay(passwordSubmit, 10);
         AppLogger.info("Clicked on Password Submit button.");
 
         // Check for error message after clicking
         try {
             WebElement errorMsg = wait.until(ExpectedConditions.visibilityOf(passwordError));
-
             if (errorMsg.isDisplayed()) {
                 AppLogger.error("Login failed: Your password is incorrect.");
                 throw new RuntimeException("Terminating test: Incorrect password.");
@@ -109,8 +102,6 @@ public class LoginPage {
 
     public void verifyOTP(){
         try {
-//            WebElement otpBox = driver.findElement(By.xpath("//*[contains(@id, 'box-otp')]"));
-//            WebElement otpSubmitButton = driver.findElement(By.xpath("//*[contains(text(), \"Submit code\")]"));
             if (otpBox.isDisplayed()) {
                 AppLogger.warn("OTP box displayed. Waiting for user input...");
                 clickWithDelay(otpBox, 20);

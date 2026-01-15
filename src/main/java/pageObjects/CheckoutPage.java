@@ -61,29 +61,10 @@ public class CheckoutPage {
         clickWithDelay(cartBtn, 5);
     }
 
-    public void productToKeep(){
-//        // Product name that should remain selected
-//        String productToKeep = homePage.SelcProd();
-//
-//        // Get all product containers in the cart
-//        List<WebElement> products = driver.findElements(By.xpath("//*[contains(@data-csa-c-painter, \"shoppingcart\")]//span[contains(@class, \"cut\")]"));
-//        for (WebElement product : products) {
-//            // Extract product name
-//            String productName = product.getText().trim();
-//
-//            // Locate the checkbox inside the product container
-//            WebElement checkbox = product.findElement(By.xpath(".//div[@role='listitem']/descendant::input[contains(@aria-label, \"Select\")]"));
-//            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", checkbox);
-//
-//            if (productName.equalsIgnoreCase(homePage.SelcProd())) {
-//                // Keep this one selected
-//                if (!checkbox.isSelected()) {
-//                    clickWithDelay(checkbox, 5);
-//                }
-//            } else if (checkbox.isSelected()){
-//                // Uncheck all other products
-//                clickWithDelay(checkbox, 5);
-//            }
-//        }
+    public void selectCartItemByName(String PRODTitle) {
+        WebElement itemRow = driver.findElement(By.xpath("//form[@id='activeCartViewForm']//div[@role='listitem']//span[normalize-space()='" + PRODTitle + "']"));
+        WebElement checkbox = itemRow.findElement(By.xpath("//label[input[contains(@aria-label,'Select')] and .//i[contains(@class,'icon-checkbox')]]"));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", checkbox);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", checkbox);
     }
 }
