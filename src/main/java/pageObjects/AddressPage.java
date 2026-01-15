@@ -79,18 +79,17 @@ public class AddressPage {
         }
 
         try { //pending
-            WebElement thisAddress = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(@id, \"secondary\")]/child::span/child::input[contains(@class, \"a-button-input\")]")));
-            clickWithDelay(thisAddress, 5);
+            wait.until(ExpectedConditions.visibilityOfAllElements(deliverToThisAddressBtn));
+            clickWithDelay(deliverToThisAddressBtn, 5);
         }catch (Exception e){
             AppLogger.warn("Deliver to this address button not found");
         }
     }
 
     public String selcAddress() {
-        return driver.findElement(By.xpath("//*[contains(@id, \"deliver-to-address\")]")).getText().trim();
+        return selectedAddress.getText().trim();
     }
     public String getselAddress() {
         return deliAddress;
     }
-
 }
