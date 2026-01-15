@@ -11,7 +11,7 @@ Feature: AmazonProductPurchaseFlow
     And user sorts by "test.sortOption"
     And user selects product "test.prodC"
     Then product name should match
-    And user proceeds to checkout
+    And user proceeds to checkout "test.prodC"
     And user enters delivery name "test.perName"
     And user enters delivery address "test.deliverTo"
     And user selects payment method "test.paymentMethod"
