@@ -7,8 +7,8 @@ Feature: AmazonProductPurchaseFlow
     Given user is logged in with email "test.email/mobileNO." and password "test.password"
 
     When user searches for "test.product"
-    And user filters by brand "test.brandName"
     And user sorts by "test.sortOption"
+    And user filters by brand "test.brandName"
     And user selects product "test.prodC"
     Then product name should match
     And user proceeds to checkout "test.prodC"

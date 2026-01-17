@@ -31,7 +31,7 @@ public class CheckoutPage {
     private WebElement addToCartBtn;
     @FindBy(name = "proceedToRetailCheckout")
     private WebElement proceedToCheckoutBtn;
-    @FindBy(xpath = "//*[contains(@class,'primary-cart-button')]//input")
+    @FindBy(xpath = "//span[contains(@class,'cart-icon')]")
     private WebElement cartBtn;
 
     public void isProductAvailable() {

@@ -41,7 +41,7 @@ public class LoginPage {
     private WebElement passwordError;
     @FindBy(xpath = "//*[contains(@id, 'box-otp')]")
     private WebElement otpBox;
-    @FindBy(xpath = "//*[contains(text(), 'Submit code')]")
+    @FindBy(xpath = "//input[@type='submit' and contains(@aria-labelledby,'submit-otp')]")
     private WebElement otpSubmitButton;
 
     public void logI() {
@@ -104,7 +104,7 @@ public class LoginPage {
         try {
             if (otpBox.isDisplayed()) {
                 AppLogger.warn("OTP box displayed. Waiting for user input...");
-                clickWithDelay(otpBox, 20);
+                clickWithDelay(otpBox, 10);
                 clickWithDelay(otpSubmitButton, 0);
                 AppLogger.info("Submitted OTP.");
             } else {
