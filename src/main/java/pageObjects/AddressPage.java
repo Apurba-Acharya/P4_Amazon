@@ -52,7 +52,6 @@ public class AddressPage {
         } catch (Exception e) {
             AppLogger.error("Entered delivery name is not found: " + e.getMessage());
         }
-
     }
 
     public String selcName() {
