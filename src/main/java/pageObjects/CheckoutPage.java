@@ -31,7 +31,7 @@ public class CheckoutPage {
     private WebElement addToCartBtn;
     @FindBy(name = "proceedToRetailCheckout")
     private WebElement proceedToCheckoutBtn;
-    @FindBy(xpath = "//span[contains(@class,'cart-icon')]")
+    @FindBy(xpath = "//a[@id='nav-cart']")
     private WebElement cartBtn;
 
     public void isProductAvailable() {
@@ -57,13 +57,13 @@ public class CheckoutPage {
 
     public void cartbutton(){
         AppLogger.info("Clicking cart button...");
-        wait.until(ExpectedConditions.visibilityOfAllElements(cartBtn));
+        wait.until(ExpectedConditions.elementToBeClickable(cartBtn));
         clickWithDelay(cartBtn, 5);
     }
 
     public void selectCartItemByName(String PRODTitle) {
-        WebElement itemRow = driver.findElement(By.xpath("//form[@id='activeCartViewForm']//div[@role='listitem']//span[normalize-space()='" + PRODTitle + "']"));
-        WebElement checkbox = itemRow.findElement(By.xpath("//label[input[contains(@aria-label,'Select')] and .//i[contains(@class,'icon-checkbox')]]"));
+        WebElement itemRow = driver.findElement(By.xpath("//form[@id='activeCartViewForm']//div[@role='listitem']" + "[.//span[contains(normalize-space(),'" + PRODTitle + "')]]"));
+        WebElement checkbox = itemRow.findElement(By.xpath(".//label[input[contains(@aria-label,'Select')] and .//i[contains(@class,'icon-checkbox')]]"));
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", checkbox);
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", checkbox);
     }
