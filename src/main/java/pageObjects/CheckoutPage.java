@@ -16,8 +16,6 @@ import static utilities.BrowserUtils.clickWithDelay;
 public class CheckoutPage {
     WebDriver driver;
     WebDriverWait wait;
-//    PageObjectManager pom = new PageObjectManager(DriverManager.getDriver());
-//    HomePage homePage = pom.getHomePage();
 
     public CheckoutPage(WebDriver driver) {
         this.driver = driver;
@@ -33,6 +31,10 @@ public class CheckoutPage {
     private WebElement proceedToCheckoutBtn;
     @FindBy(xpath = "//a[@id='nav-cart']")
     private WebElement cartBtn;
+    @FindBy(id = "deselect-all")
+    private WebElement deselectAllBtn;
+    @FindBy(name = "proceedToRetailCheckout")
+    private WebElement proceedToBuyBtn;
 
     public void isProductAvailable() {
         try {
@@ -62,9 +64,22 @@ public class CheckoutPage {
     }
 
     public void selectCartItemByName(String PRODTitle) {
-        WebElement itemRow = driver.findElement(By.xpath("//form[@id='activeCartViewForm']//div[@role='listitem']" + "[.//span[contains(normalize-space(),'" + PRODTitle + "')]]"));
+        try {
+            if (deselectAllBtn.isDisplayed()) {
+                AppLogger.info("Deselect All button is visible. Clicking it.");
+                clickWithDelay(deselectAllBtn, 3);
+            } else {
+                AppLogger.warn("else: Deselect All button is not visible. Skipping item selection.");
+                return;
+            }
+        } catch (NoSuchElementException e) {
+            AppLogger.warn("catch: Deselect All button not found. Skipping item selection.");
+            return;
+        }
+
+        WebElement itemRow = driver.findElement(By.xpath("//form[@id='activeCartViewForm']" + "//div[@role='listitem']" + "[.//span[contains(normalize-space(),'" + PRODTitle + "')]]"));
         WebElement checkbox = itemRow.findElement(By.xpath(".//label[input[contains(@aria-label,'Select')] and .//i[contains(@class,'icon-checkbox')]]"));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", checkbox);
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", checkbox);
+        clickWithDelay(checkbox, 3);
+        AppLogger.info("Product selected successfully: " + PRODTitle);
     }
 }
