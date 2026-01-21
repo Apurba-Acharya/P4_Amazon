@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import utilities.AppLogger;
 
@@ -14,6 +15,7 @@ import java.time.Duration;
 import java.util.List;
 
 import static utilities.BrowserUtils.clickWithDelay;
+import static utilities.BrowserUtils.enterText;
 
 public class AddressPage {
     WebDriver driver;
@@ -39,55 +41,48 @@ public class AddressPage {
     private WebElement selectedName;
     @FindBy(xpath = "//*[contains(@id,'deliver-to-address')]")
     private WebElement selectedAddress;
-
-    private void enterText(WebElement element, String value) {
-    wait.until(ExpectedConditions.visibilityOf(element));
-    element.clear();
-    element.sendKeys(value);
-    }
-
-    @FindBy(id = "address-ui-widgets-enterAddressFullName")
+    @FindBy(xpath = ".//*[contains(@id, 'enterAddressFullName')]")
     private WebElement fullNameInput;
-    @FindBy(id = "address-ui-widgets-enterAddressPhoneNumber")
+    @FindBy(xpath = ".//*[contains(@id, 'enterAddressPhoneNumber')]")
     private WebElement mobileNumberInput;
-    @FindBy(id = "address-ui-widgets-enterAddressPostalCode")
+    @FindBy(xpath = ".//*[contains(@id, 'enterAddressPostalCode')]")
     private WebElement pinCodeInput;
-    @FindBy(id = "address-ui-widgets-enterAddressLine1")
+    @FindBy(xpath = ".//*[contains(@id, 'enterAddressLine1')]")
     private WebElement flatHouseInput;
-    @FindBy(id = "address-ui-widgets-enterAddressLine2")
+    @FindBy(xpath = ".//*[contains(@id, 'enterAddressLine2')]")
     private WebElement areaStreetInput;
-    @FindBy(id = "address-ui-widgets-landmark")
+    @FindBy(xpath = ".//*[contains(@id, 'landmark')]")
     private WebElement landmarkInput;
-    @FindBy(id = "address-ui-widgets-enterAddressCity")
+    @FindBy(xpath = ".//*[contains(@id, 'enterAddressCity')]")
     private WebElement cityInput;
-    @FindBy(id = "address-ui-widgets-enterAddressStateOrRegion-dropdown-nativeId")
+    @FindBy(xpath = ".//*[contains(@id, 'enterAddressStateOrRegion')]")
     private WebElement stateDropdown;
-    @FindBy(xpath = "//input[@aria-labelledby='address-ui-widgets-form-submit-button-announce']")
+    @FindBy(xpath = ".//*[contains(@id, 'primary-continue-button')]")
     private WebElement useThisAddressBtn;
 
     public void clickDeliveryAddressPage(){
         clickWithDelay(addNewDeliveryAddressBtn, 3);
     }
     public void enterFullName(String name) {
-        enterText(fullNameInput, name);
+        enterText(driver, fullNameInput, name);
     }
     public void enterMobileNumber(String mobile) {
-        enterText(mobileNumberInput, mobile);
+        enterText(driver, mobileNumberInput, mobile);
     }
     public void enterPinCode(String pincode) {
-        enterText(pinCodeInput, pincode);
+        enterText(driver, pinCodeInput, pincode);
     }
     public void enterFlatHouse(String flat) {
-        enterText(flatHouseInput, flat);
+        enterText(driver, flatHouseInput, flat);
     }
     public void enterAreaStreet(String area) {
-        enterText(areaStreetInput, area);
+        enterText(driver, areaStreetInput, area);
     }
     public void enterLandmark(String landmark) {
-        enterText(landmarkInput, landmark);
+        enterText(driver, landmarkInput, landmark);
     }
     public void enterCity(String city) {
-        enterText(cityInput, city);
+        enterText(driver, cityInput, city);
     }
     public void selectState(String stateName) {
     wait.until(ExpectedConditions.visibilityOf(stateDropdown));
@@ -98,57 +93,4 @@ public class AddressPage {
     wait.until(ExpectedConditions.elementToBeClickable(useThisAddressBtn)).click();
     }
 
-//    public void DeliveryName(String perName) {
-//        try {
-//            List<WebElement> names = wait.until(ExpectedConditions.visibilityOfAllElements(deliveryNames));
-//            for (WebElement name : names) {
-//                String deliN = name.getText().trim();
-//                deliName = deliN;
-//                if (deliN.equalsIgnoreCase(perName)) {
-//                    AppLogger.info("Entered delivery name is matched: " + deliN);
-//                    break;
-//                }
-//            }
-//        } catch (Exception e) {
-//            AppLogger.error("Entered delivery name is not found: " + e.getMessage());
-//        }
-//    }
-//
-//    public String selcName() {
-//        return selectedName.getText().trim();
-//    }
-//    public String getselName() {
-//        return deliName;
-//    }
-//
-//    public void DeliveryAddress(String deliverTo) {
-//        try {
-//            List<WebElement> addresses = wait.until(ExpectedConditions.visibilityOfAllElements(deliveryAddresses));
-//            for (WebElement address : addresses) {
-//                String deliAdd = address.getText().trim();
-//                deliAddress = deliAdd;
-//                if (deliAdd.equalsIgnoreCase(deliverTo)) {
-//                    AppLogger.info("Entered delivery address found: " + deliAdd);
-//                    clickWithDelay(address, 10);
-//                    break;
-//                }
-//            }
-//        } catch (Exception e) {
-//            AppLogger.error("Entered delivery address is not found: " + e.getMessage());
-//        }
-//
-//        try { //pending
-//            wait.until(ExpectedConditions.visibilityOfAllElements(deliverToThisAddressBtn));
-//            clickWithDelay(deliverToThisAddressBtn, 5);
-//        }catch (Exception e){
-//            AppLogger.warn("Deliver to this address button not found");
-//        }
-//    }
-//
-//    public String selcAddress() {
-//        return selectedAddress.getText().trim();
-//    }
-//    public String getselAddress() {
-//        return deliAddress;
-//    }
 }
