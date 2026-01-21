@@ -32,7 +32,8 @@ public class checkoutAndDeliveredTo {
     @When("user enters delivery name {string}")
     public void user_enters_delivery_name(String perNameKey) {
         String perName = ConfigReader.getProperty(perNameKey);
-        addressPage.DeliveryName(perName);
+        addressPage.clickDeliveryAddressPage();
+
     }
 
     @Then("user enters delivery address {string}")
