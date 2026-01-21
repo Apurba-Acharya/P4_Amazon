@@ -31,9 +31,17 @@ public class checkoutAndDeliveredTo {
     }
     @When("user enters delivery name {string}")
     public void user_enters_delivery_name(String perNameKey) {
-        String perName = ConfigReader.getProperty(perNameKey);
+        // String perName = ConfigReader.getProperty(perNameKey);
         addressPage.clickDeliveryAddressPage();
-
+        addressPage.enterFullName(ConfigReader.getProperty("test.fullName"));
+        addressPage.enterMobileNumber(ConfigReader.getProperty("test.mobileNumber"));
+        addressPage.enterPinCode(ConfigReader.getProperty("test.pinCode"));
+        addressPage.enterFlatHouse(ConfigReader.getProperty("test.flatHouse"));
+        addressPage.enterAreaStreet(ConfigReader.getProperty("test.areaStreet"));
+        addressPage.enterLandmark(ConfigReader.getProperty("test.landMark"));
+        addressPage.enterCity(ConfigReader.getProperty("test.cityName"));
+        addressPage.selectState(ConfigReader.getProperty("test.stateName"));
+        addressPage.clickUseThisAddress();
     }
 
     @Then("user enters delivery address {string}")
