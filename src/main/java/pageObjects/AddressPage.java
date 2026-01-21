@@ -39,12 +39,57 @@ public class AddressPage {
     private WebElement selectedName;
     @FindBy(xpath = "//*[contains(@id,'deliver-to-address')]")
     private WebElement selectedAddress;
+    @FindBy(id = "address-ui-widgets-enterAddressFullName")
+    private WebElement fullNameInput;
+    @FindBy(id = "address-ui-widgets-enterAddressPhoneNumber")
+    private WebElement mobileNumberInput;
+    @FindBy(id = "address-ui-widgets-enterAddressPostalCode")
+    private WebElement pinCodeInput;
+    @FindBy(id = "address-ui-widgets-enterAddressLine1")
+    private WebElement flatHouseInput;
+    @FindBy(id = "address-ui-widgets-enterAddressLine2")
+    private WebElement areaStreetInput;
+    @FindBy(id = "address-ui-widgets-landmark")
+    private WebElement landmarkInput;
+    @FindBy(id = "address-ui-widgets-enterAddressCity")
+    private WebElement cityInput;
+    @FindBy(id = "address-ui-widgets-enterAddressStateOrRegion-dropdown-nativeId")
+    private WebElement stateDropdown;
+    @FindBy(xpath = "//input[@aria-labelledby='address-ui-widgets-form-submit-button-announce']")
+    private WebElement useThisAddressBtn;
 
     public void clickDeliveryAddressPage(){
         clickWithDelay(addNewDeliveryAddressBtn, 3);
     }
-
-
+    public void enterFullName(String name) {
+        enterText(fullNameInput, name);
+    }
+    public void enterMobileNumber(String mobile) {
+        enterText(mobileNumberInput, mobile);
+    }
+    public void enterPinCode(String pincode) {
+        enterText(pinCodeInput, pincode);
+    }
+    public void enterFlatHouse(String flat) {
+        enterText(flatHouseInput, flat);
+    }
+    public void enterAreaStreet(String area) {
+        enterText(areaStreetInput, area);
+    }
+    public void enterLandmark(String landmark) {
+        enterText(landmarkInput, landmark);
+    }
+    public void enterCity(String city) {
+        enterText(cityInput, city);
+    }
+    public void selectState(String stateName) {
+    wait.until(ExpectedConditions.visibilityOf(stateDropdown));
+    Select select = new Select(stateDropdown);
+    select.selectByVisibleText(stateName);
+    }
+    public void clickUseThisAddress() {
+    wait.until(ExpectedConditions.elementToBeClickable(useThisAddressBtn)).click();
+    }
 
 //    public void DeliveryName(String perName) {
 //        try {
