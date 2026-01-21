@@ -39,6 +39,13 @@ public class AddressPage {
     private WebElement selectedName;
     @FindBy(xpath = "//*[contains(@id,'deliver-to-address')]")
     private WebElement selectedAddress;
+
+    private void enterText(WebElement element, String value) {
+    wait.until(ExpectedConditions.visibilityOf(element));
+    element.clear();
+    element.sendKeys(value);
+    }
+
     @FindBy(id = "address-ui-widgets-enterAddressFullName")
     private WebElement fullNameInput;
     @FindBy(id = "address-ui-widgets-enterAddressPhoneNumber")
