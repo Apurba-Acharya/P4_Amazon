@@ -118,7 +118,7 @@ public class HomePage {
 
     public void sortBy(String sortOption) {
         AppLogger.info("Sorting by option: " + sortOption);
-        wait.until(ExpectedConditions.visibilityOf(sortDropdown)).click();
+        clickWithDelay(sortDropdown, 5);
         List<WebElement> sortBy = wait.until(ExpectedConditions.visibilityOfAllElements(sortOptions));
         for (WebElement sorted : sortBy) {
             if (sorted.getText().equalsIgnoreCase(sortOption)) {

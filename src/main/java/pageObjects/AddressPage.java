@@ -20,8 +20,6 @@ import static utilities.BrowserUtils.enterText;
 public class AddressPage {
     WebDriver driver;
     WebDriverWait wait;
-    private String deliName;
-    private String deliAddress;
 
     public AddressPage(WebDriver driver) {
         this.driver = driver;
@@ -61,27 +59,35 @@ public class AddressPage {
     private WebElement useThisAddressBtn;
 
     public void clickDeliveryAddressPage(){
+        AppLogger.info("Clicking on the Add New Delivery Address button...");
         clickWithDelay(addNewDeliveryAddressBtn, 3);
     }
     public void enterFullName(String name) {
+        AppLogger.info("Entering full name in Add an Address popup");
         enterText(driver, fullNameInput, name);
     }
     public void enterMobileNumber(String mobile) {
+        AppLogger.info("Entering mobile number in Add an Address popup");
         enterText(driver, mobileNumberInput, mobile);
     }
     public void enterPinCode(String pincode) {
+        AppLogger.info("Entering pin code in Add an Address popup");
         enterText(driver, pinCodeInput, pincode);
     }
     public void enterFlatHouse(String flat) {
+        AppLogger.info("Entering flat name in Add an Address popup");
         enterText(driver, flatHouseInput, flat);
     }
     public void enterAreaStreet(String area) {
+        AppLogger.info("Entering area name in Add an Address popup");
         enterText(driver, areaStreetInput, area);
     }
     public void enterLandmark(String landmark) {
+        AppLogger.info("Entering landmark in Add an Address popup");
         enterText(driver, landmarkInput, landmark);
     }
     public void enterCity(String city) {
+        AppLogger.info("Entering city in Add an Address popup");
         enterText(driver, cityInput, city);
     }
     public void selectState(String stateName) {
