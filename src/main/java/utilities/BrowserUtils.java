@@ -5,11 +5,14 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.Date;
 
 public class BrowserUtils {
@@ -19,9 +22,16 @@ public class BrowserUtils {
         try {
             Thread.sleep(delayInSeconds * 1000);
         } catch (InterruptedException e) {
-            //e.printStackTrace();
         }
         element.click();
+    }
+
+    //Enter text in delivery address page
+    public static void enterText(WebDriver driver, WebElement element, String value) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOf(element));
+        element.clear();
+        element.sendKeys(value);
     }
 
     // Attach screenshots:

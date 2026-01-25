@@ -69,11 +69,12 @@
             <version>3.0.0-beta2</version>
             <scope>test</scope>
         </dependency>
-      <!-- https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager -->
+        <!-- Source: https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager -->
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
-            <version>6.2.0</version>
+            <version>6.3.3</version>
+            <scope>compile</scope>
         </dependency>
       <!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-java -->
         <dependency>

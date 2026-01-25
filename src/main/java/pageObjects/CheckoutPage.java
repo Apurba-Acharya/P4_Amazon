@@ -3,6 +3,8 @@ package pageObjects;
 import managers.DriverManager;
 import managers.PageObjectManager;
 import org.openqa.selenium.*;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.*;
 import utilities.AppLogger;
 
@@ -14,68 +16,68 @@ import static utilities.BrowserUtils.clickWithDelay;
 public class CheckoutPage {
     WebDriver driver;
     WebDriverWait wait;
-    PageObjectManager pom = new PageObjectManager(DriverManager.getDriver());
-    HomePage homePage = pom.getHomePage();
 
     public CheckoutPage(WebDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        PageFactory.initElements(driver, this);
     }
+
+    @FindBy(xpath = "//*[contains(@id,'outOfStock')]/descendant::span[1]")
+    private List<WebElement> outOfStockMsg;
+    @FindBy(xpath = "//*[contains(@id,'add-to-cart-button')]")
+    private WebElement addToCartBtn;
+    @FindBy(name = "proceedToRetailCheckout")
+    private WebElement proceedToCheckoutBtn;
+    @FindBy(xpath = "//a[@id='nav-cart']")
+    private WebElement cartBtn;
+    @FindBy(id = "deselect-all")
+    private WebElement deselectAllBtn;
 
     public void isProductAvailable() {
         try {
-            List<WebElement> unavailElems = driver.findElements(By.xpath("//*[contains(@id, 'outOfStock')]/descendant::span[1]"));
-            if (!unavailElems.isEmpty() && unavailElems.get(0).getText().trim().equals("Currently unavailable.")) {
-//                System.out.println("You are trying to buy an unavailable product");
+            if (!outOfStockMsg.isEmpty() && outOfStockMsg.get(0).getText().trim().equals("Currently unavailable.")) {
                 AppLogger.warn("You are trying to buy an unavailable product.");
-                System.exit(0); // Immediately terminate execution
+                System.exit(0);
             } else {
                 AppLogger.info("Product available. Proceeding to add to cart.");
-                WebElement addToCartBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(@class, 'a-spacing-none a-padding')]//descendant::input[contains(@id, 'add-to-cart-button')]")));
+                wait.until(ExpectedConditions.visibilityOfAllElements(addToCartBtn));
                 clickWithDelay(addToCartBtn, 5);
             }
         } catch (Exception e) {
-//            System.out.println("Error while checking availability or adding to cart: " + e.getMessage());
             AppLogger.error("Error while checking availability or adding to cart: " + e.getMessage());
         }
     }
 
-    public void proceedToCheckout() {
+    public void proceedToCheckout() { //pending
         AppLogger.info("Proceeding to checkout...");
-        WebElement checkOut = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(@name, \"proceedToRetailCheckout\")]")));
-        clickWithDelay(checkOut, 5);
+        wait.until(ExpectedConditions.visibilityOfAllElements(proceedToCheckoutBtn));
+        clickWithDelay(proceedToCheckoutBtn, 5);
     }
 
     public void cartbutton(){
         AppLogger.info("Clicking cart button...");
-        WebElement cButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(@class, \"primary-cart-button\")]/descendant::input")));
-        clickWithDelay(cButton, 5);
+        wait.until(ExpectedConditions.elementToBeClickable(cartBtn));
+        clickWithDelay(cartBtn, 5);
     }
 
-   //Uncheck remaining product present in shopping cart:
-    public void productToKeep(){
-//        // Product name that should remain selected
-//        //String productToKeep = homePage.SelcProd();
-//
-//        // Get all product containers in the cart
-//        List<WebElement> products = driver.findElements(By.xpath("//*[contains(@data-csa-c-painter, \"shoppingcart\")]//span[contains(@class, \"cut\")]"));
-//        for (WebElement product : products) {
-//            // Extract product name
-//            String productName = product.getText().trim();
-//
-//            // Locate the checkbox inside the product container
-//            WebElement checkbox = product.findElement(By.xpath(".//div[@role='listitem']/descendant::input[contains(@aria-label, \"Select\")]"));
-//            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", checkbox);
-//
-//            if (productName.equalsIgnoreCase(homePage.SelcProd())) {
-//                // Keep this one selected
-//                if (!checkbox.isSelected()) {
-//                    clickWithDelay(checkbox, 5);
-//                }
-//            } else if (checkbox.isSelected()){
-//                // Uncheck all other products
-//                clickWithDelay(checkbox, 5);
-//            }
-//        }
+    public void selectCartItemByName(String PRODTitle) {
+        try {
+            if (deselectAllBtn.isDisplayed()) {
+                AppLogger.info("Deselect All button is visible. Clicking it.");
+                clickWithDelay(deselectAllBtn, 3);
+            } else {
+                AppLogger.warn("else: Deselect All button is not visible. Skipping item selection.");
+                return;
+            }
+        } catch (NoSuchElementException e) {
+            AppLogger.warn("catch: Deselect All button not found. Skipping item selection.");
+            return;
+        }
+
+        WebElement itemRow = driver.findElement(By.xpath("//form[@id='activeCartViewForm']" + "//div[@role='listitem']" + "[.//span[contains(normalize-space(),'" + PRODTitle + "')]]"));
+        WebElement checkbox = itemRow.findElement(By.xpath(".//label[input[contains(@aria-label,'Select')] and .//i[contains(@class,'icon-checkbox')]]"));
+        clickWithDelay(checkbox, 3);
+        AppLogger.info("Product selected successfully: " + PRODTitle);
     }
 }

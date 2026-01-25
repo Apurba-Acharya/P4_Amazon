@@ -2,6 +2,8 @@ package pageObjects;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.*;
 import utilities.AppLogger;
 
@@ -18,40 +20,54 @@ public class LoginPage {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         this.action = new Actions(driver);
+        PageFactory.initElements(driver, this);
     }
+
+    @FindBy(xpath = "//a[starts-with(@href, 'https://www.amazon.in/ap/signin')]/following-sibling::button")
+    private WebElement signInHover;
+    @FindBy(css = ".nav-action-inner")
+    private WebElement signInButton;
+    @FindBy(xpath = "//*[contains(@id, 'email_login')]")
+    private WebElement emailInput;
+    @FindBy(xpath = "//input[@type='submit']")
+    private WebElement emailSubmit;
+    @FindBy(xpath = "//*[contains(text(), 'Looks like you are new to Amazon')]")
+    private WebElement emailError;
+    @FindBy(css = "input[type*='password']")
+    private WebElement passwordInput;
+    @FindBy(css = "input[id*='signIn']")
+    private WebElement passwordSubmit;
+    @FindBy(xpath = "//*[contains(text(), 'Your password is incorrect')]")
+    private WebElement passwordError;
+    @FindBy(xpath = "//*[contains(@id, 'box-otp')]")
+    private WebElement otpBox;
+    @FindBy(xpath = "//input[@type='submit' and contains(@aria-labelledby,'submit-otp')]")
+    private WebElement otpSubmitButton;
 
     public void logI() {
         try {
-            WebElement ele = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[starts-with(@href, 'https://www.amazon.in/ap/signin')]/following-sibling::button")));
+            WebElement ele = wait.until(ExpectedConditions.visibilityOf(signInHover));
             action.moveToElement(ele).build().perform();
-            WebElement eleSinBut = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".nav-action-inner")));
+            WebElement eleSinBut = wait.until(ExpectedConditions.visibilityOf(signInButton));
             clickWithDelay(eleSinBut, 5);
             AppLogger.info("Clicked on Sign-In button.");
         } catch (TimeoutException e) {
-//            System.out.println("PopUp/SignIn button no found");
             AppLogger.error("PopUp/SignIn button not found within timeout.");
         }
     }
 
     public void Email(String email) throws InterruptedException {
-        WebElement e = wait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//*[contains(@id, \"email_login\")]")));
-
+        WebElement e = wait.until(ExpectedConditions.visibilityOf(emailInput));
         for (char ch : email.toCharArray()) {
             e.sendKeys(Character.toString(ch));
             Thread.sleep(1000);
         }
         AppLogger.info("Entered email/mobile no. : " + email);
-
-        WebElement loginEmail = driver.findElement(By.xpath("//input[@type=\"submit\"]"));
-        clickWithDelay(loginEmail, 5);
+        clickWithDelay(emailSubmit, 5);
         AppLogger.info("Clicked on Email/mobile no. Submit button.");
 
-        // Check for "Looks like you are new to Amazon"
         try {
-            WebElement errorMsg = wait.until(ExpectedConditions.visibilityOfElementLocated(
-                    By.xpath("//*[contains(text(), \"Looks like you are new to Amazon\")]")));
-
+            WebElement errorMsg = wait.until(ExpectedConditions.visibilityOf(emailError));
             if (errorMsg.isDisplayed()) {
                 AppLogger.error("Login failed: Looks like you are new to Amazon.");
                 throw new RuntimeException("Terminating test: Invalid email/mobile no.");
@@ -62,24 +78,19 @@ public class LoginPage {
     }
 
     public void password(String passwo) throws InterruptedException {
-        WebElement f = wait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.cssSelector("input[type*=\"password\"]")));
+        WebElement f = wait.until(ExpectedConditions.visibilityOf(passwordInput));
 
         for (char chP : passwo.toCharArray()) {
             f.sendKeys(Character.toString(chP));
             Thread.sleep(3000);
         }
         AppLogger.info("Entered password (hidden).");
-
-        WebElement loginPass = driver.findElement(By.cssSelector("input[id*=\"signIn\"]"));
-        clickWithDelay(loginPass, 10);
+        clickWithDelay(passwordSubmit, 10);
         AppLogger.info("Clicked on Password Submit button.");
 
         // Check for error message after clicking
         try {
-            WebElement errorMsg = wait.until(ExpectedConditions.visibilityOfElementLocated(
-                    By.xpath("//*[contains(text(), \"Your password is incorrect\")]")));
-
+            WebElement errorMsg = wait.until(ExpectedConditions.visibilityOf(passwordError));
             if (errorMsg.isDisplayed()) {
                 AppLogger.error("Login failed: Your password is incorrect.");
                 throw new RuntimeException("Terminating test: Incorrect password.");
@@ -91,20 +102,15 @@ public class LoginPage {
 
     public void verifyOTP(){
         try {
-            WebElement otpBox = driver.findElement(By.xpath("//*[contains(@id, 'box-otp')]"));
-            WebElement otpSubmitButton = driver.findElement(By.xpath("//*[contains(text(), \"Submit code\")]"));
             if (otpBox.isDisplayed()) {
-//                System.out.println("OTP box displayed. Waiting for 20 seconds...");
                 AppLogger.warn("OTP box displayed. Waiting for user input...");
-                clickWithDelay(otpBox, 20);
+                clickWithDelay(otpBox, 10);
                 clickWithDelay(otpSubmitButton, 0);
                 AppLogger.info("Submitted OTP.");
             } else {
-//                System.out.println("OTP box not displayed. Continuing execution...");
                 AppLogger.warn("OTP box not displayed. Continuing execution...");
             }
         } catch (org.openqa.selenium.NoSuchElementException e) {
-//            System.out.println("OTP box not found. Continuing execution...");
             AppLogger.warn("OTP box not found. Skipping OTP step...");
         }
     }

@@ -24,8 +24,8 @@ Execution on Browser
         ↓
 Allure Report + Logs + Screenshots
 
-1️⃣ src/main/java — 
-managers/
+1️⃣ src/main/java —
+🔹 managers/
 | File                     | Purpose                                               |
 | ------------------------ | ----------------------------------------------------- |
 | `DriverManager.java`     | Handles WebDriver initialization, ThreadLocal support |

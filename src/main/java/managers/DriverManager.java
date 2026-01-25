@@ -68,7 +68,7 @@ public class DriverManager {
 
     private static WebDriver initEdge() {
         try {
-            WebDriverManager.edgedriver().driverVersion("139.0.3405.111").setup();
+            WebDriverManager.edgedriver().setup();
             EdgeOptions options = new EdgeOptions();
             options.addArguments("--disable-notifications");
             return new EdgeDriver(options);

@@ -21,23 +21,25 @@ public class checkoutAndDeliveredTo {
     PaymentPage paymentPage = pom.getPaymentPage();
     SoftAssert soft = new SoftAssert();
 
-    @Given("user proceeds to checkout")
-    public void user_proceeds_to_checkout() {
+    @Given("user proceeds to checkout {string}")
+    public void user_proceeds_to_checkout(String prodTitle) {
+        String PRODTitle = ConfigReader.getProperty(prodTitle);
         checkOut.isProductAvailable();
         checkOut.cartbutton();
-        checkOut.productToKeep();
+        checkOut.selectCartItemByName(PRODTitle);
         checkOut.proceedToCheckout();
     }
-    @When("user enters delivery name {string}")
-    public void user_enters_delivery_name(String perNameKey) {
-        String perName = ConfigReader.getProperty(perNameKey);
-        addressPage.DeliveryName(perName);
-    }
-
-    @Then("user enters delivery address {string}")
-    public void user_enters_delivery_address(String deliverToKey) {
-        String deliverTo = ConfigReader.getProperty(deliverToKey);
-        addressPage.DeliveryAddress(deliverTo);
+    @When("user eliveryAddress details")
+    public void user_deliveryAddress_details() {
+        addressPage.clickDeliveryAddressPage();
+        addressPage.enterFullName(ConfigReader.getProperty("test.fullName"));
+        addressPage.enterMobileNumber(ConfigReader.getProperty("test.mobileNumber"));
+        addressPage.enterPinCode(ConfigReader.getProperty("test.pinCode"));
+        addressPage.enterFlatHouse(ConfigReader.getProperty("test.flatHouse"));
+        addressPage.enterAreaStreet(ConfigReader.getProperty("test.areaStreet"));
+        addressPage.enterLandmark(ConfigReader.getProperty("test.landMark"));
+        addressPage.enterCity(ConfigReader.getProperty("test.cityName"));
+        addressPage.clickUseThisAddress();
     }
 
 }

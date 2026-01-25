@@ -4,7 +4,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import utilities.AppLogger;
 
@@ -12,76 +15,97 @@ import java.time.Duration;
 import java.util.List;
 
 import static utilities.BrowserUtils.clickWithDelay;
+import static utilities.BrowserUtils.enterText;
 
 public class AddressPage {
     WebDriver driver;
     WebDriverWait wait;
-    private String deliName;
-    private String deliAddress;
+    private boolean isNewAddress = false;
 
     public AddressPage(WebDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        PageFactory.initElements(driver, this);
     }
 
-    public void DeliveryName(String perName) {
-        try {
-            List<WebElement> names = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//*[contains(@class, \"a-radio-label\")]/descendant::span[1]")));
-            for (WebElement name : names) {
-                String deliN = name.getText().trim();
-                deliName = deliN;
-                if (deliN.equalsIgnoreCase(perName)) {
-//                    System.out.println("Entered delivery name is matched: " + deliN);
-                    AppLogger.info("Entered delivery name is matched: " + deliN);
-                    break;
-                }
-            }
-        } catch (Exception e) {
-//            System.out.println("Entered delivery name is not found: " + e.getMessage());
-            AppLogger.error("Entered delivery name is not found: " + e.getMessage());
-        }
+    @FindBy(xpath = ".//*[contains(@id, 'new-address')]//*[contains(text(), 'new delivery')]")
+    private WebElement addNewDeliveryAddressBtn;
+    @FindBy(xpath = ".//*[contains(@id, 'change-delivery')]")
+    private List<WebElement> changeDeliveryLink;
+    @FindBy(xpath = ".//*[contains(@id, 'enterAddressFullName')]")
+    private WebElement fullNameInput;
+    @FindBy(xpath = ".//*[contains(@id, 'enterAddressPhoneNumber')]")
+    private WebElement mobileNumberInput;
+    @FindBy(xpath = ".//*[contains(@id, 'enterAddressPostalCode')]")
+    private WebElement pinCodeInput;
+    @FindBy(xpath = ".//*[contains(@id, 'enterAddressLine1')]")
+    private WebElement flatHouseInput;
+    @FindBy(xpath = ".//*[contains(@id, 'enterAddressLine2')]")
+    private WebElement areaStreetInput;
+    @FindBy(xpath = ".//*[contains(@id, 'landmark')]")
+    private WebElement landmarkInput;
+    @FindBy(xpath = ".//*[contains(@id, 'enterAddressCity')]")
+    private WebElement cityInput;
+    @FindBy(xpath = ".//*[contains(@id, 'enterAddressStateOrRegion')]")
+    private WebElement stateDropdown;
+    @FindBy(xpath = ".//*[contains(@id, 'primary-continue-button')]")
+    private WebElement useThisAddressBtn;
 
-    }
-
-    public String selcName() {
-        return driver.findElement(By.cssSelector("#deliver-to-customer-text")).getText().trim();
-    }
-    public String getselName() {
-        return deliName;
-    }
-
-    public void DeliveryAddress(String deliverTo) {
-        try {
-            List<WebElement> addresses = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//*[contains(@class, \"a-radio-label\")]/descendant::span[2]")));
-            for (WebElement address : addresses) {
-                String deliAdd = address.getText().trim();
-                deliAddress = deliAdd;
-                if (deliAdd.equalsIgnoreCase(deliverTo)) {
-//                    System.out.println("Entered delivery address found: " + deliAdd);
-                    AppLogger.info("Entered delivery address found: " + deliAdd);
-                    clickWithDelay(address, 10);
-                    break;
-                }
-            }
-        } catch (Exception e) {
-//            System.out.println("Entered delivery address is not found: " + e.getMessage());
-            AppLogger.error("Entered delivery address is not found: " + e.getMessage());
-        }
-
-        try {
-            WebElement thisAddress = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(@id, \"secondary\")]/child::span/child::input[contains(@class, \"a-button-input\")]")));
-            clickWithDelay(thisAddress, 5);
-        }catch (Exception e){
-//            System.out.println("Deliver to this address button not found");
-            AppLogger.warn("Deliver to this address button not found");
+    public void clickDeliveryAddressPage() {
+        if (!changeDeliveryLink.isEmpty()) {
+            AppLogger.info("Address already exists. Skipping Add Address popup.");
+            isNewAddress = false;
+        } else {
+            AppLogger.info("No saved address found. Opening Add Address popup.");
+            clickWithDelay(addNewDeliveryAddressBtn, 3);
+            isNewAddress = true;
         }
     }
 
-    public String selcAddress() {
-        return driver.findElement(By.xpath("//*[contains(@id, \"deliver-to-address\")]")).getText().trim();
-    }
-    public String getselAddress() {
-        return deliAddress;
+    public void enterFullName(String name) {
+        if (!isNewAddress) return;
+        AppLogger.info("Entering full name in Add an Address popup");
+        enterText(driver, fullNameInput, name);
     }
 
+    public void enterMobileNumber(String mobile) {
+        if (!isNewAddress) return;
+        enterText(driver, mobileNumberInput, mobile);
+    }
+
+    public void enterPinCode(String pincode) {
+        if (!isNewAddress) return;
+        enterText(driver, pinCodeInput, pincode);
+    }
+
+    public void enterFlatHouse(String flat) {
+        if (!isNewAddress) return;
+        enterText(driver, flatHouseInput, flat);
+    }
+
+    public void enterAreaStreet(String area) {
+        if (!isNewAddress) return;
+        enterText(driver, areaStreetInput, area);
+    }
+
+    public void enterLandmark(String landmark) {
+        if (!isNewAddress) return;
+        enterText(driver, landmarkInput, landmark);
+    }
+
+    public void enterCity(String city) {
+        if (!isNewAddress) return;
+        enterText(driver, cityInput, city);
+    }
+
+    public void selectState(String stateName) {
+        if (!isNewAddress) return;
+        wait.until(ExpectedConditions.visibilityOf(stateDropdown));
+        new Select(stateDropdown).selectByVisibleText(stateName);
+    }
+
+    public void clickUseThisAddress() {
+        if (!isNewAddress) return;
+        clickWithDelay(useThisAddressBtn, 5);
+    }
 }

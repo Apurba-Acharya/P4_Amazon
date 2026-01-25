@@ -27,8 +27,8 @@ public class ProductBuySteps {
 
         homePage.continueShoppingButton();
         loginPage.logI();
-        loginPage.Email(email);
-        loginPage.password(password);
+        loginPage.Email(ConfigReader.getProperty(emailKey));
+        loginPage.password(ConfigReader.getProperty(passwordKey));
         loginPage.verifyOTP();
     }
 
