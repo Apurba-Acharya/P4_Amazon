@@ -20,6 +20,7 @@ import static utilities.BrowserUtils.enterText;
 public class AddressPage {
     WebDriver driver;
     WebDriverWait wait;
+    private boolean isNewAddress = false;
 
     public AddressPage(WebDriver driver) {
         this.driver = driver;
@@ -27,18 +28,10 @@ public class AddressPage {
         PageFactory.initElements(driver, this);
     }
 
-    @FindBy(xpath = "//*[contains(@class,'a-radio-label')]/descendant::span[1]")
-    private List<WebElement> deliveryNames;
-    @FindBy(xpath = "//*[contains(@class,'a-radio-label')]/descendant::span[2]")
-    private List<WebElement> deliveryAddresses;
     @FindBy(xpath = ".//*[contains(@id, 'new-address')]//*[contains(text(), 'new delivery')]")
     private WebElement addNewDeliveryAddressBtn;
-    @FindBy(xpath = "//*[contains(@id,'secondary')]/span/input[contains(@class,'a-button-input')]")
-    private WebElement deliverToThisAddressBtn;
-    @FindBy(css = "#deliver-to-customer-text")
-    private WebElement selectedName;
-    @FindBy(xpath = "//*[contains(@id,'deliver-to-address')]")
-    private WebElement selectedAddress;
+    @FindBy(xpath = ".//*[contains(@id, 'change-delivery')]")
+    private List<WebElement> changeDeliveryLink;
     @FindBy(xpath = ".//*[contains(@id, 'enterAddressFullName')]")
     private WebElement fullNameInput;
     @FindBy(xpath = ".//*[contains(@id, 'enterAddressPhoneNumber')]")
@@ -58,45 +51,61 @@ public class AddressPage {
     @FindBy(xpath = ".//*[contains(@id, 'primary-continue-button')]")
     private WebElement useThisAddressBtn;
 
-    public void clickDeliveryAddressPage(){
-        AppLogger.info("Clicking on the Add New Delivery Address button...");
-        clickWithDelay(addNewDeliveryAddressBtn, 3);
+    public void clickDeliveryAddressPage() {
+        if (!changeDeliveryLink.isEmpty()) {
+            AppLogger.info("Address already exists. Skipping Add Address popup.");
+            isNewAddress = false;
+        } else {
+            AppLogger.info("No saved address found. Opening Add Address popup.");
+            clickWithDelay(addNewDeliveryAddressBtn, 3);
+            isNewAddress = true;
+        }
     }
+
     public void enterFullName(String name) {
+        if (!isNewAddress) return;
         AppLogger.info("Entering full name in Add an Address popup");
         enterText(driver, fullNameInput, name);
     }
+
     public void enterMobileNumber(String mobile) {
-        AppLogger.info("Entering mobile number in Add an Address popup");
+        if (!isNewAddress) return;
         enterText(driver, mobileNumberInput, mobile);
     }
+
     public void enterPinCode(String pincode) {
-        AppLogger.info("Entering pin code in Add an Address popup");
+        if (!isNewAddress) return;
         enterText(driver, pinCodeInput, pincode);
     }
+
     public void enterFlatHouse(String flat) {
-        AppLogger.info("Entering flat name in Add an Address popup");
+        if (!isNewAddress) return;
         enterText(driver, flatHouseInput, flat);
     }
+
     public void enterAreaStreet(String area) {
-        AppLogger.info("Entering area name in Add an Address popup");
+        if (!isNewAddress) return;
         enterText(driver, areaStreetInput, area);
     }
+
     public void enterLandmark(String landmark) {
-        AppLogger.info("Entering landmark in Add an Address popup");
+        if (!isNewAddress) return;
         enterText(driver, landmarkInput, landmark);
     }
+
     public void enterCity(String city) {
-        AppLogger.info("Entering city in Add an Address popup");
+        if (!isNewAddress) return;
         enterText(driver, cityInput, city);
     }
+
     public void selectState(String stateName) {
-    wait.until(ExpectedConditions.visibilityOf(stateDropdown));
-    Select select = new Select(stateDropdown);
-    select.selectByVisibleText(stateName);
-    }
-    public void clickUseThisAddress() {
-    wait.until(ExpectedConditions.elementToBeClickable(useThisAddressBtn)).click();
+        if (!isNewAddress) return;
+        wait.until(ExpectedConditions.visibilityOf(stateDropdown));
+        new Select(stateDropdown).selectByVisibleText(stateName);
     }
 
+    public void clickUseThisAddress() {
+        if (!isNewAddress) return;
+        clickWithDelay(useThisAddressBtn, 5);
+    }
 }

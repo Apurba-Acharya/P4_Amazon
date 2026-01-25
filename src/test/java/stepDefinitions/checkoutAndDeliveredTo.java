@@ -31,7 +31,6 @@ public class checkoutAndDeliveredTo {
     }
     @When("user enters delivery name")
     public void user_enters_delivery_name() {
-        // String perName = ConfigReader.getProperty(perNameKey);
         addressPage.clickDeliveryAddressPage();
         addressPage.enterFullName(ConfigReader.getProperty("test.fullName"));
         addressPage.enterMobileNumber(ConfigReader.getProperty("test.mobileNumber"));
