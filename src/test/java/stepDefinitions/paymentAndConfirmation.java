@@ -23,13 +23,10 @@ public class paymentAndConfirmation {
     SoftAssert soft = new SoftAssert();
 
     @Given("user selects payment method {string}")
-    public void user_selects_payment_method(String paymentMethodKey) {
-        String paymentMethod = ConfigReader.getProperty(paymentMethodKey);
-        paymentPage.PaymentType(paymentMethod);
+    public void user_selects_payment_method(String paymentMethod) {
+        paymentPage.PaymentType(ConfigReader.getProperty(paymentMethod));
         paymentPage.usePaymentMethod();
     }
-
-    //@When()
 
     @Then("order summary should be correct")
     public void order_summary_should_be_correct() {

@@ -12,7 +12,6 @@ Feature: AmazonProductPurchaseFlow
     And user selects product "test.prodC"
     Then product name should match
     And user proceeds to checkout "test.prodC"
-    And user enters delivery name
-    And user enters delivery address "test.deliverTo"
+    And user eliveryAddress details
     And user selects payment method "test.paymentMethod"
     Then order summary should be correct

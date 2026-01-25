@@ -29,8 +29,8 @@ public class checkoutAndDeliveredTo {
         checkOut.selectCartItemByName(PRODTitle);
         checkOut.proceedToCheckout();
     }
-    @When("user enters delivery name")
-    public void user_enters_delivery_name() {
+    @When("user eliveryAddress details")
+    public void user_deliveryAddress_details() {
         addressPage.clickDeliveryAddressPage();
         addressPage.enterFullName(ConfigReader.getProperty("test.fullName"));
         addressPage.enterMobileNumber(ConfigReader.getProperty("test.mobileNumber"));
@@ -39,14 +39,7 @@ public class checkoutAndDeliveredTo {
         addressPage.enterAreaStreet(ConfigReader.getProperty("test.areaStreet"));
         addressPage.enterLandmark(ConfigReader.getProperty("test.landMark"));
         addressPage.enterCity(ConfigReader.getProperty("test.cityName"));
-        addressPage.selectState(ConfigReader.getProperty("test.stateName")); // state name will automatically fetch when pin code will enter
         addressPage.clickUseThisAddress();
-    }
-
-    @Then("user enters delivery address {string}")
-    public void user_enters_delivery_address(String deliverToKey) {
-        String deliverTo = ConfigReader.getProperty(deliverToKey);
-        //addressPage.DeliveryAddress(deliverTo);
     }
 
 }

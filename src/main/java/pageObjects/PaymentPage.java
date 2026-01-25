@@ -1,9 +1,6 @@
 package pageObjects;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -26,42 +23,25 @@ public class PaymentPage {
         PageFactory.initElements(driver, this);
     }
 
-    @FindBy(xpath = "//*[contains(@class,'box-inner')]//div[contains(@class,'pmts')][2]//div[contains(@class,'fixed-right')][4]")
-    private List<WebElement> paymentMethods;
-    @FindBy(xpath = "//*[contains(@id,'selected-payment-method')]//h2/span")
-    private WebElement selectedPaymentMethod;
     @FindBy(xpath = "//*[contains(@id,'primary-continue')]//input")
     private WebElement usePaymentBtn;
     @FindBy(xpath = "//*[contains(@class,'a-button-close')]")
     private WebElement closePopupBtn;
 
     public void PaymentType(String paymentMethod) {
-        try {
-            AppLogger.info("Looking for payment method: " + paymentMethod);
-            List<WebElement> payments = wait.until(ExpectedConditions.visibilityOfAllElements(paymentMethods));
-            for (WebElement payment : payments) {
-                String deliPay = payment.getText().trim();
-                deliPayment = deliPay;
-                if (deliPay.equalsIgnoreCase(paymentMethod)) {
-                    AppLogger.info("Selected payment method found: " + deliPay);
-                    clickWithDelay(payment, 5);
-                    break;
-                }
-            }
-            AppLogger.warn("Payment method not found in available options: " + paymentMethod);
-        } catch (Exception e) {
-            AppLogger.error("Error while selecting payment method: " + e.getMessage());
-        }
-    }
 
-    public String selcPayment() {
-        String selected = selectedPaymentMethod.getText().trim();
-        AppLogger.info("Currently selected payment method: " + selected);
-        return selected;
-    }
-    public String getselPayment() {
-        AppLogger.info("Returning cached payment method: " + deliPayment);
-        return deliPayment;
+        try {
+            WebElement paymentBox = driver.findElement(By.xpath(".//div[contains(@class,'pmts-instrument-box')]" + "[.//span[contains(normalize-space(),'" + paymentMethod + "')]]"));
+            if (!paymentBox.isEnabled()) {
+                AppLogger.error(paymentMethod + " is present but disabled.");
+                return;
+            }
+            clickWithDelay(paymentBox, 3);
+            AppLogger.info("Payment method selected successfully: " + paymentMethod);
+
+        } catch (NoSuchElementException e) {
+            AppLogger.error(paymentMethod + " is not available in payment options.");
+        }
     }
 
     public void usePaymentMethod(){

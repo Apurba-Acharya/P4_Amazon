@@ -33,8 +33,6 @@ public class CheckoutPage {
     private WebElement cartBtn;
     @FindBy(id = "deselect-all")
     private WebElement deselectAllBtn;
-    @FindBy(name = "proceedToRetailCheckout")
-    private WebElement proceedToBuyBtn;
 
     public void isProductAvailable() {
         try {
