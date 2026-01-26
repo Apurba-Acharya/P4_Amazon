@@ -29,7 +29,7 @@ public class checkoutAndDeliveredTo {
         checkOut.selectCartItemByName(PRODTitle);
         checkOut.proceedToCheckout();
     }
-    @When("user eliveryAddress details")
+    @When("user deliveryAddress details")
     public void user_deliveryAddress_details() {
         addressPage.clickDeliveryAddressPage();
         addressPage.enterFullName(ConfigReader.getProperty("test.fullName"));
@@ -41,5 +41,4 @@ public class checkoutAndDeliveredTo {
         addressPage.enterCity(ConfigReader.getProperty("test.cityName"));
         addressPage.clickUseThisAddress();
     }
-
 }

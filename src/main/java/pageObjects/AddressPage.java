@@ -50,6 +50,8 @@ public class AddressPage {
     private WebElement stateDropdown;
     @FindBy(xpath = ".//*[contains(@id, 'primary-continue-button')]")
     private WebElement useThisAddressBtn;
+    @FindBy(xpath = ".//h2[contains(text(),'Delivering to')]")
+    private WebElement deliveringToText;
 
     public void clickDeliveryAddressPage() {
         if (!changeDeliveryLink.isEmpty()) {
@@ -107,5 +109,10 @@ public class AddressPage {
     public void clickUseThisAddress() {
         if (!isNewAddress) return;
         clickWithDelay(useThisAddressBtn, 5);
+    }
+
+    public String getDeliveringToName() {
+        wait.until(ExpectedConditions.visibilityOf(deliveringToText));
+        return deliveringToText.getText().trim();
     }
 }

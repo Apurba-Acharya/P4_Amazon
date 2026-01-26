@@ -1,8 +1,6 @@
 package stepDefinitions;
 
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
 import managers.ConfigReader;
 import managers.DriverManager;
 import managers.PageObjectManager;
@@ -12,7 +10,7 @@ import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
 import pageObjects.*;
 
-public class paymentAndConfirmation {
+public class placeYourOrderFinalSummaryPage {
     private static final Logger log = LoggerFactory.getLogger(ProductBuySteps.class);
     PageObjectManager pom = new PageObjectManager(DriverManager.getDriver());
     HomePage homePage = pom.getHomePage();
@@ -22,9 +20,12 @@ public class paymentAndConfirmation {
     PaymentPage paymentPage = pom.getPaymentPage();
     SoftAssert soft = new SoftAssert();
 
-    @Given("user selects payment method {string}")
-    public void user_selects_payment_method(String paymentMethod) {
-        paymentPage.PaymentType(ConfigReader.getProperty(paymentMethod));
-        paymentPage.usePaymentMethod();
+    @Then("order summary should be correct") //Pending
+    public void order_summary_should_be_correct() {
+//        paymentPage.lstPageClose();
+        soft.assertTrue(addressPage.getDeliveringToName().contains(ConfigReader.getProperty("test.fullName")), "Delivering name is not correct");
+        Assert.assertTrue(addressPage.getselName().contains(addressPage.selcName()));
+        Assert.assertEquals(addressPage.getselAddress(), (addressPage.selcAddress()));
+        Assert.assertTrue(paymentPage.getselPayment().contains(paymentPage.selcPayment()));
     }
 }

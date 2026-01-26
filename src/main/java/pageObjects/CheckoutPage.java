@@ -49,9 +49,8 @@ public class CheckoutPage {
         }
     }
 
-    public void proceedToCheckout() { //pending
+    public void proceedToCheckout() {
         AppLogger.info("Proceeding to checkout...");
-        wait.until(ExpectedConditions.visibilityOfAllElements(proceedToCheckoutBtn));
         clickWithDelay(proceedToCheckoutBtn, 5);
     }
 
