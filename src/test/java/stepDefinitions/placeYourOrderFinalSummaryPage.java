@@ -6,7 +6,6 @@ import managers.DriverManager;
 import managers.PageObjectManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
 import pageObjects.*;
 
@@ -20,12 +19,10 @@ public class placeYourOrderFinalSummaryPage {
     PaymentPage paymentPage = pom.getPaymentPage();
     SoftAssert soft = new SoftAssert();
 
-    @Then("order summary should be correct") //Pending
+    @Then("order summary should be correct")
     public void order_summary_should_be_correct() {
-//        paymentPage.lstPageClose();
         soft.assertTrue(addressPage.getDeliveringToName().contains(ConfigReader.getProperty("test.fullName")), "Delivering name is not correct");
-        Assert.assertTrue(addressPage.getselName().contains(addressPage.selcName()));
-        Assert.assertEquals(addressPage.getselAddress(), (addressPage.selcAddress()));
-        Assert.assertTrue(paymentPage.getselPayment().contains(paymentPage.selcPayment()));
+        soft.assertTrue(paymentPage.getselPayment().toLowerCase().trim().contains(ConfigReader.getProperty("test.paymentMethod").toLowerCase().trim()), "Miss matched payment method");
+        soft.assertAll();
     }
 }

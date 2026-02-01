@@ -27,6 +27,8 @@ public class PaymentPage {
     private WebElement usePaymentBtn;
     @FindBy(xpath = "//*[contains(@class,'a-button-close')]")
     private WebElement closePopupBtn;
+    @FindBy(xpath = ".//*[contains(@class,'selected-payment')]")
+    private WebElement selPayMethod;
 
     public void PaymentType(String paymentMethod) {
 
@@ -55,5 +57,10 @@ public class PaymentPage {
         AppLogger.info("Closing last page popup...");
         WebElement lstPage = wait.until(ExpectedConditions.visibilityOf(closePopupBtn));
         clickWithDelay(lstPage, 5);
+    }
+
+    public String getselPayment(){
+        wait.until(ExpectedConditions.visibilityOf(selPayMethod));
+        return selPayMethod.getText().trim();
     }
 }

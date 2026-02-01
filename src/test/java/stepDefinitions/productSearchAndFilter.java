@@ -30,16 +30,16 @@ public class productSearchAndFilter {
         homePage.searchProduct(product);
     }
 
-    @And("user filters by brand {string}")
-    public void user_filters_by_brand(String brandNameKey) {
-        String brandName = ConfigReader.getProperty(brandNameKey);
-        homePage.filterByBrand(brandName);
-    }
-
     @And("user sorts by {string}")
     public void user_sorts_by(String sortOptionKey) {
         String sortOption = ConfigReader.getProperty(sortOptionKey);
         homePage.sortBy(sortOption);
+    }
+
+    @And("user filters by brand {string}")
+    public void user_filters_by_brand(String brandNameKey) {
+        String brandName = ConfigReader.getProperty(brandNameKey);
+        homePage.filterByBrand(brandName);
     }
 
     @And("user selects product {string}")

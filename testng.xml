@@ -5,8 +5,8 @@
         <classes>
             <class name="runners.Login"/>
             <class name="runners.SearchFilter"/>
+            <class name="runners.Checkout"/>
             <class name="runners.Payment"/>
-            <class name="runners.checkout"/>
         </classes>
     </test>
 </suite>

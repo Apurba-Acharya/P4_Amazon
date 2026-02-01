@@ -5,7 +5,6 @@ Feature: AmazonProductPurchaseFlow
 
   Scenario: User buys a product from search to payment
     Given user is logged in with email "test.email/mobileNO." and password "test.password"
-
     When user searches for "test.product"
     And user sorts by "test.sortOption"
     And user filters by brand "test.brandName"

@@ -23,18 +23,14 @@ public class userLogin {
 
     @When("user is logged in with email_mobileNO. {string} and passworD {string}")
     public void user_is_logged_in(String emailKey, String passwordKey) throws InterruptedException {
-        String email = ConfigReader.getProperty(emailKey);     // fetch from config.properties
-        String password = ConfigReader.getProperty(passwordKey); // fetch from config.properties
-
         loginPage.logI();
-        loginPage.Email(email);
-        loginPage.password(password);
+        loginPage.Email(ConfigReader.getProperty(emailKey)); // fetch from config.properties
+        loginPage.password(ConfigReader.getProperty(passwordKey)); // fetch from config.properties
         loginPage.verifyOTP();
     }
 
     @Then("user should be logged in successfully {string}")
     public void user_should_be_logged_in_successfully(String ownerNameKey){
-        String ownerName= ConfigReader.getProperty(ownerNameKey);
-        homePage.ownerName(ownerName);
+        homePage.ownerName(ConfigReader.getProperty(ownerNameKey));
     }
 }
