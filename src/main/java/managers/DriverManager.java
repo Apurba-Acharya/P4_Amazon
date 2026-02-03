@@ -10,26 +10,29 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
 public class DriverManager {
-
     private static WebDriver driver;
+    // ⭐ Window Handles
+    private static String parentWindow;
+    private static String childWindow;
+
+    private DriverManager() {
+        // Prevent object creation
+    }
+    // ================= DRIVER INITIALIZATION =================
 
     public static WebDriver getDriver() {
         if (driver == null) {
             String browser = ConfigReader.getProperty("browser").toLowerCase();
-
             switch (browser) {
                 case "chrome":
                     driver = initChrome();
                     break;
-
                 case "firefox":
                     driver = initFirefox();
                     break;
-
                 case "edge":
                     driver = initEdge();
                     break;
-
                 default:
                     throw new IllegalArgumentException("Unsupported browser: " + browser);
             }
@@ -38,50 +41,79 @@ public class DriverManager {
         return driver;
     }
 
+    // ================= CHROME =================
+
     private static WebDriver initChrome() {
-        try {
-            WebDriverManager.chromedriver().setup();
-            ChromeOptions options = new ChromeOptions();
-            options.setExperimentalOption("excludeSwitches", new String[]{"enable-automation"});
-            options.addArguments("--disable-features=WebAuthenticationUI");
-            options.addArguments("--disable-save-password-bubble");
-            options.addArguments("--disable-notifications");
-            return new ChromeDriver(options);
-        } catch (Exception e) {
-            System.setProperty("webdriver.chrome.driver", "C:\\Users\\apurb\\IdeaProjects\\P4_Amazon\\src\\Drivers\\chromedriver.exe");
-            return new ChromeDriver();
-        }
+        WebDriverManager.chromedriver().setup();
+        ChromeOptions options = new ChromeOptions();
+        options.setExperimentalOption("excludeSwitches", new String[]{"enable-automation"});
+        options.addArguments("--disable-notifications");
+        options.addArguments("--disable-save-password-bubble");
+        options.addArguments("--disable-features=WebAuthenticationUI");
+        return new ChromeDriver(options);
     }
+
+    // ================= FIREFOX =================
 
     private static WebDriver initFirefox() {
-        try {
-            WebDriverManager.firefoxdriver().setup();
-            FirefoxOptions options = new FirefoxOptions();
-            options.addPreference("dom.webnotifications.enabled", false);
-            options.addPreference("signon.rememberSignons", false);
-            return new FirefoxDriver(options);
-        } catch (Exception e) {
-            System.setProperty("webdriver.gecko.driver", "C:\\Users\\apurb\\IdeaProjects\\P4_Amazon\\src\\Drivers\\geckodriver.exe");
-            return new FirefoxDriver();
-        }
+        WebDriverManager.firefoxdriver().setup();
+        FirefoxOptions options = new FirefoxOptions();
+        options.addPreference("dom.webnotifications.enabled", false);
+        options.addPreference("signon.rememberSignons", false);
+        return new FirefoxDriver(options);
     }
+
+    // ================= EDGE =================
 
     private static WebDriver initEdge() {
-        try {
-            WebDriverManager.edgedriver().setup();
-            EdgeOptions options = new EdgeOptions();
-            options.addArguments("--disable-notifications");
-            return new EdgeDriver(options);
-        } catch (Exception e) {
-            System.setProperty("webdriver.edge.driver", "C:\\Users\\apurb\\IdeaProjects\\P4_Amazon\\src\\Drivers\\msedgedriver.exe");
-            return new EdgeDriver();
+        WebDriverManager.edgedriver().setup();
+        EdgeOptions options = new EdgeOptions();
+        options.addArguments("--disable-notifications");
+        return new EdgeDriver(options);
+    }
+
+    // ================= WINDOW HANDLE MANAGEMENT =================
+
+    public static void setParentWindow(String window) {
+        parentWindow = window;
+    }
+    public static String getParentWindow() {
+        return parentWindow;
+    }
+    public static void setChildWindow(String window) {
+        childWindow = window;
+    }
+    public static String getChildWindow() {
+        return childWindow;
+    }
+
+    // Switch to Child Window
+    public static void switchToChildWindow() {
+        if (childWindow != null) {
+            driver.switchTo().window(childWindow);
+        } else {
+            throw new RuntimeException("Child window not found!");
         }
     }
 
-    public static void quitDriver() {           // TestHooks dependency
+    // Switch to Parent Window
+    public static void switchToParentWindow() {
+        if (parentWindow != null) {
+            driver.switchTo().window(parentWindow);
+        } else {
+            throw new RuntimeException("Parent window not found!");
+        }
+    }
+
+    // ================= QUIT DRIVER =================
+
+    public static void quitDriver() {
         if (driver != null) {
             driver.quit();
             driver = null;
+            // Reset windows
+            parentWindow = null;
+            childWindow = null;
         }
     }
 }

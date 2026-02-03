@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.asserts.SoftAssert;
 import pageObjects.*;
+import utilities.BrowserUtils;
 
 public class checkoutAndDeliveredTo {
     private static final Logger log = LoggerFactory.getLogger(ProductBuySteps.class);
@@ -23,12 +24,14 @@ public class checkoutAndDeliveredTo {
 
     @Given("user proceeds to checkout {string}")
     public void user_proceeds_to_checkout(String prodTitle) {
+        BrowserUtils.switchToChildWindow();
         String PRODTitle = ConfigReader.getProperty(prodTitle);
         checkOut.isProductAvailable();
         checkOut.cartbutton();
         checkOut.selectCartItemByName(PRODTitle);
         checkOut.proceedToCheckout();
     }
+
     @When("user deliveryAddress details")
     public void user_deliveryAddress_details() {
         addressPage.clickDeliveryAddressPage();

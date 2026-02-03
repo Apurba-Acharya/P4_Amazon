@@ -34,20 +34,38 @@ public class CheckoutPage {
     @FindBy(id = "deselect-all")
     private WebElement deselectAllBtn;
 
+//    public void isProductAvailable() {
+//        try {
+//            if (!outOfStockMsg.isEmpty() && outOfStockMsg.get(0).getText().trim().equals("Currently unavailable.")) {
+//                AppLogger.warn("You are trying to buy an unavailable product.");
+//                System.exit(0);
+//            } else {
+//                AppLogger.info("Product available. Proceeding to add to cart.");
+//                wait.until(ExpectedConditions.visibilityOfAllElements(addToCartBtn));
+//                clickWithDelay(addToCartBtn, 5);
+//            }
+//        } catch (Exception e) {
+//            AppLogger.error("Error while checking availability or adding to cart: " + e.getMessage());
+//        }
+//    }
+
     public void isProductAvailable() {
         try {
-            if (!outOfStockMsg.isEmpty() && outOfStockMsg.get(0).getText().trim().equals("Currently unavailable.")) {
-                AppLogger.warn("You are trying to buy an unavailable product.");
-                System.exit(0);
+            List<WebElement> outOfStockMsg = driver.findElements(By.xpath("//*[contains(text(),'Currently unavailable')]"));
+            if (!outOfStockMsg.isEmpty()) {
+                AppLogger.warn("Product unavailable");
+//                System.exit(0);
+                return;
             } else {
                 AppLogger.info("Product available. Proceeding to add to cart.");
-                wait.until(ExpectedConditions.visibilityOfAllElements(addToCartBtn));
-                clickWithDelay(addToCartBtn, 5);
+                WebElement addToCart = wait.until(ExpectedConditions.elementToBeClickable(By.id("add-to-cart-button")));
+                clickWithDelay(addToCart, 5);
             }
         } catch (Exception e) {
-            AppLogger.error("Error while checking availability or adding to cart: " + e.getMessage());
+            AppLogger.error("Error while adding to cart: " + e.getMessage());
         }
     }
+
 
     public void proceedToCheckout() {
         AppLogger.info("Proceeding to checkout...");

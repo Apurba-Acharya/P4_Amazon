@@ -1,6 +1,7 @@
 package utilities;
 
 import io.qameta.allure.Attachment;
+import managers.DriverManager;   // ✅ ADD THIS IMPORT
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -26,7 +27,7 @@ public class BrowserUtils {
         element.click();
     }
 
-    //Enter text in delivery address page
+    // Enter text
     public static void enterText(WebDriver driver, WebElement element, String value) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.visibilityOf(element));
@@ -34,13 +35,13 @@ public class BrowserUtils {
         element.sendKeys(value);
     }
 
-    // Attach screenshots:
+    // Attach screenshots
     @Attachment(value = "Screenshot", type = "image/png")
     public static byte[] attachScreenshot(WebDriver driver) {
         return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
     }
 
-    // Save screenshot with timestamp in target > screenshots:
+    // Save screenshot
     public static void saveScreenshot(WebDriver driver, String testName) {
         try {
             byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
@@ -54,6 +55,16 @@ public class BrowserUtils {
 
         } catch (Exception e) {
 
+        }
+    }
+
+    // ✅ NEW METHOD (Child Window Switch Utility)
+    public static void switchToChildWindow() {
+
+        String child = DriverManager.getChildWindow();
+
+        if (child != null) {
+            DriverManager.getDriver().switchTo().window(child);
         }
     }
 }

@@ -1,5 +1,6 @@
 package pageObjects;
 
+import managers.DriverManager;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
@@ -18,6 +19,7 @@ public class HomePage {
     WebDriver driver;
     WebDriverWait wait;
     private String selectedProduct;
+    private String childWindow;
     Actions action;
 
     public HomePage(WebDriver driver) {
@@ -129,6 +131,41 @@ public class HomePage {
         }
     }
 
+//    public void listOfProducts(String prodC) {
+//        AppLogger.info("Looking for product in list: " + prodC);
+//        wait.until(ExpectedConditions.visibilityOfAllElements(productTitles));
+//        boolean found = false;
+//        String parentWindow = driver.getWindowHandle();
+//        for (WebElement prdts : productTitles) {
+//            String Prdts = prdts.getText().trim();
+//            selectedProduct = Prdts;
+//            if (Prdts.equalsIgnoreCase(prodC)) {
+//                AppLogger.info("Product found: " + Prdts + " — clicking it.");
+//                clickWithDelay(prdts, 8);
+//                found = true;
+//
+//                // after clicking, check if child window opened
+//                Set<String> allWindows = driver.getWindowHandles();
+//                if (allWindows.size() > 1) {
+//                    for (String window : allWindows) {
+//                        if (!window.equals(parentWindow)) {
+//                            childWindow=window;
+//                            driver.switchTo().window(childWindow);
+//                            AppLogger.info("Switched to child window: " + window);
+//                            break;
+//                        }
+//                    }
+//                } else {
+//                    AppLogger.info("No child window found, staying in parent window.");
+//                }
+//                break;
+//            }
+//        }
+//        if (!found) {
+//            AppLogger.warn("Product not found from the list: " + prodC);
+//        }
+//    }
+
     public void listOfProducts(String prodC) {
         AppLogger.info("Looking for product in list: " + prodC);
         wait.until(ExpectedConditions.visibilityOfAllElements(productTitles));
@@ -147,7 +184,10 @@ public class HomePage {
                 if (allWindows.size() > 1) {
                     for (String window : allWindows) {
                         if (!window.equals(parentWindow)) {
-                            driver.switchTo().window(window);
+
+                            DriverManager.setChildWindow(window);   // ✅ store in DriverManager
+                            driver.switchTo().window(window);       // ✅ switch to child window
+
                             AppLogger.info("Switched to child window: " + window);
                             break;
                         }
