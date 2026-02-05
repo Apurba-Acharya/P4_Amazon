@@ -60,9 +60,7 @@ public class BrowserUtils {
 
     // ✅ NEW METHOD (Child Window Switch Utility)
     public static void switchToChildWindow() {
-
         String child = DriverManager.getChildWindow();
-
         if (child != null) {
             DriverManager.getDriver().switchTo().window(child);
         }
