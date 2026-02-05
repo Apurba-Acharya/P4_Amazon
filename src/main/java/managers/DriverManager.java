@@ -11,14 +11,12 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 
 public class DriverManager {
     private static WebDriver driver;
-    // ⭐ Window Handles
     private static String parentWindow;
     private static String childWindow;
 
     private DriverManager() {
         // Prevent object creation
     }
-    // ================= DRIVER INITIALIZATION =================
 
     public static WebDriver getDriver() {
         if (driver == null) {
@@ -41,8 +39,6 @@ public class DriverManager {
         return driver;
     }
 
-    // ================= CHROME =================
-
     private static WebDriver initChrome() {
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
@@ -53,8 +49,6 @@ public class DriverManager {
         return new ChromeDriver(options);
     }
 
-    // ================= FIREFOX =================
-
     private static WebDriver initFirefox() {
         WebDriverManager.firefoxdriver().setup();
         FirefoxOptions options = new FirefoxOptions();
@@ -63,16 +57,12 @@ public class DriverManager {
         return new FirefoxDriver(options);
     }
 
-    // ================= EDGE =================
-
     private static WebDriver initEdge() {
         WebDriverManager.edgedriver().setup();
         EdgeOptions options = new EdgeOptions();
         options.addArguments("--disable-notifications");
         return new EdgeDriver(options);
     }
-
-    // ================= WINDOW HANDLE MANAGEMENT =================
 
     public static void setParentWindow(String window) {
         parentWindow = window;
@@ -87,7 +77,6 @@ public class DriverManager {
         return childWindow;
     }
 
-    // Switch to Child Window
     public static void switchToChildWindow() {
         if (childWindow != null) {
             driver.switchTo().window(childWindow);
@@ -96,7 +85,6 @@ public class DriverManager {
         }
     }
 
-    // Switch to Parent Window
     public static void switchToParentWindow() {
         if (parentWindow != null) {
             driver.switchTo().window(parentWindow);
@@ -104,8 +92,6 @@ public class DriverManager {
             throw new RuntimeException("Parent window not found!");
         }
     }
-
-    // ================= QUIT DRIVER =================
 
     public static void quitDriver() {
         if (driver != null) {
